@@ -19,7 +19,6 @@ const Finals: FC = () => {
             (window as any).res = res;
             // res.output.forEach((e) => console.log(e.course, new Date(`${e.day} 2019 ${e.time.split(' ')[0]} ${e.time.split(' ')[3]}`)));
             res.output = res.output.filter(e => e.course.startsWith("CS "));
-            res.output = res.output.slice(0, 100);
             setData(res);
         }
         fetchData();

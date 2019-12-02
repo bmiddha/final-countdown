@@ -1,0 +1,11 @@
+name: Docker CI
+
+on: push
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: build-image
+      run: docker build .
