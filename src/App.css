@@ -1,22 +1,92 @@
-.App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Roboto+Mono');
 
-.App-logo {
-  height: 40vmin;
+html,body {
+    margin: 0;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    background-color: #333333;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+::-webkit-scrollbar {
+    display: none;
 }
-
-.App-link {
-  color: #09d3ac;
+* {
+    box-sizing: border-box;
+}
+footer {
+    padding: 25px;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom ease-in-out 0.5s;
+}
+a:hover {
+    border-color: #ffffff
+}
+#topbar {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+.lightCoolShadow {
+    color: rgba(255,255,255,0.8);
+    text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
+}
+.darkCoolShadow {
+    color: rgba(0,0,0,0.8);
+    text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
+}
+.final {
+    padding: 20px;
+    display: inline-block;
+    /* width: 275px; */
+    /* height: 225px; */
+    margin: 30px;
+    background: #DFDCE3;
+    box-shadow: 0 8px 6px -6px black;
+    overflow: hidden;
+    text-align: left;
+}
+.finalNum {
+    float: left;
+    font-family: 'Roboto Mono', monospace;
+    position: relative;
+    font-size: 30px;
+    margin: 0 0 15px 0;
+}
+.finalCountdown {
+    font-family: 'Roboto Mono', monospace;
+    float: right;
+    font-size: 30px;
+    margin: 0 0 15px 0;
+}
+.finalLocation {
+    clear: both;
+    column-count: 2;
+}
+.finalLocation>span {
+    display: block;
+}
+.finalTime {
+    border-top: 3px solid rgba(0,0,0,0.6);
+    padding-top: 10px;
+    clear: both;
+}
+.past {
+    display: none;
+}
+.inProgress {
+    background-color: #F7B733;
+}
+.countdownExpired>.finalCountdown {
+    color: #FC4A1A;    
+}
+.countdownWarning {
+    background-color: #FC4A1A;
+}
+#gradCountdown {
+    font-family: 'Roboto Mono', monospace;
 }
