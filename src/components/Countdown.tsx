@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from 'react';
 
 interface CountdownProps {
     endMessage: string;
@@ -26,9 +26,12 @@ const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) =>
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
     useEffect(() => {
-        setTimeout(() => {
+        const updateInterval = setInterval(() => {
             setTimeLeft(calculateTimeLeft());
         }, 1000);
+        return(() => {
+            clearInterval(updateInterval);
+        });
     });
 
     return (

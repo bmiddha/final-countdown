@@ -1,12 +1,19 @@
 import React from 'react';
 import Home from './pages/Home';
+import Config from './pages/Config';
+import Navigation from './components/Navigation';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <Router>
+      <Navigation />
+      <Switch>
+        <Route path='/config' component={Config} />
+        <Route path='/' component={Home} />
+      </Switch>
+    </Router>
   );
 }
 

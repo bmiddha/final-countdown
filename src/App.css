@@ -42,8 +42,8 @@ a:hover {
 .final {
     padding: 20px;
     display: inline-block;
-    /* width: 275px; */
-    /* height: 225px; */
+    width: 475px;
+    height: 225px;
     margin: 30px;
     background: #DFDCE3;
     box-shadow: 0 8px 6px -6px black;
@@ -56,16 +56,21 @@ a:hover {
     position: relative;
     font-size: 30px;
     margin: 0 0 15px 0;
+    padding-right: 10px;
 }
 .finalCountdown {
     font-family: 'Roboto Mono', monospace;
     float: right;
     font-size: 30px;
     margin: 0 0 15px 0;
+    padding-left: 10px;
+    border-left: 3px solid rgba(0,0,0,0.6);
+}
+.countdown {
+    font-family: 'Roboto Mono', monospace;
 }
 .finalLocation {
     clear: both;
-    column-count: 2;
 }
 .finalLocation>span {
     display: block;

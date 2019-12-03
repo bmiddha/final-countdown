@@ -1,47 +1,29 @@
 import React, { FC } from 'react';
 import Countdown from './Countdown';
-
+import { DaysShortNames, MonthShortNames } from '../models/Date';
 export interface FinalProps {
     type: string;
+    department: string;
     course: string;
-    day: string;
-    time: string;
-    building: string;
-    rooms: string;
+    crn: string;
+    finalStart: Date;
+    finalEnd: Date;
+    location: string;
     comments: string;
 };
 
 
 const Final: FC<FinalProps> = (props: FinalProps) => {
-    const getFinalTime = () => {
-        const date = `${props.day} 2019`;
-        let startTimeHour = props.time.split(' ')[0].split(':')[0];
-        const startTimeMinute = props.time.split(' ')[0].split(':')[1];
-        let endTimeHour = props.time.split(' ')[2].split(':')[0];
-        const endTimeMinute = props.time.split(' ')[2].split(':')[1];
-        const amPmStr = props.time.split(' ')[3];
-        if (amPmStr === 'pm' || amPmStr === 'PM') { 
-            if (parseInt(startTimeHour) > parseInt(endTimeHour))
-                startTimeHour = `${parseInt(startTimeHour) + 12}`
-            else if (parseInt(endTimeHour) !== 12) {
-                endTimeHour = `${parseInt(endTimeHour) + 12}`
-                startTimeHour = `${parseInt(startTimeHour) + 12}`
-            }
-        }
-        const finalStart = new Date(`${date} ${startTimeHour}:${startTimeMinute}`);
-        const finalEnd = new Date(`${date} ${endTimeHour}:${endTimeMinute}`);
-        return { finalStart, finalEnd };
-    }
-    const { finalStart, finalEnd } = getFinalTime();
 
+    const humanizeDate = (d: Date) => `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
+    const humanizeTime = (d: Date) => `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
     return (
-        <div className="final" data-final-start="{finalStart}" data-final-end="{finalEnd}">
-            <p className="finalNum darkCoolShadow">{props.course}</p>
-            <p className="finalCountdown darkCoolShadow"><Countdown endMessage="ongoing" timer={finalStart} /></p>
-            <p className="finalTime">{props.day} | {props.time}</p>
-            <p className="finalTime">{finalStart.toString()} | {finalEnd.toString()}</p>
-            <p className="finalLocation"><span>{props.building} | {props.rooms}</span></p>
-            {props.type} | {props.comments}
+        <div className='final'>
+            <p className='finalNum darkCoolShadow'>{props.department} {props.course} {props.crn}</p>
+            <p className='finalCountdown darkCoolShadow'><Countdown endMessage='ongoing' timer={props.finalStart} /></p>
+            <p className='finalTime'>{humanizeDate(props.finalStart)}: {humanizeTime(props.finalStart)}- {humanizeTime(props.finalEnd)}</p>
+            <p className='finalLocation'><span>{props.location}</span></p>
+            {props.comments}
         </div>
     )
 };
