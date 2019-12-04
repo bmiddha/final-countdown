@@ -1,4 +1,4 @@
-export interface AcedemicYear {
+export interface AcademicYearApi {
     code: string;
     description: string;
 };
@@ -9,7 +9,7 @@ export interface TermData {
     term_description: string;
     name: string;
     year: string;
-    academic_year: AcedemicYear;
+    academic_year: AcademicYearApi;
 };
 
 export interface GradeProcessing {

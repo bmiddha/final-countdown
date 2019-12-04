@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import Countdown from '../components/Countdown';
 import Finals from '../components/Finals';
 import { FinalProps } from '../components/Final';
-import * as AcedemicYearApi from '../models/AcedemicYearApi';
+import * as AcademicYearApi from '../models/AcademicYearApi';
 
 interface FinalsApiResponseArray {
     type: string;
@@ -27,20 +27,19 @@ const Home: FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             // get term and year
-            const acedemicYear: AcedemicYearApi.Response = await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json')).json();
-            (window as any).acedemicYear = acedemicYear; // for debugging
+            const academicYear: AcademicYearApi.Response = await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json')).json();
+            (window as any).academicYear = academicYear; // for debugging
 
-            let nearestTerm: AcedemicYearApi.Term = acedemicYear.terms.fall;
+            let nearestTerm: AcademicYearApi.Term = academicYear.terms.fall;
             // TODO: Add support for summer semester
-            if (new Date().getTime() - (acedemicYear.terms.spring.finals.start.timestamp * 1000) > 0 &&
-                new Date().getTime() - (acedemicYear.terms.spring.finals.start.timestamp * 1000) < new Date().getTime() - (nearestTerm.finals.start.timestamp)) {
-                nearestTerm = acedemicYear.terms.spring;
+            if (new Date().getTime() - (academicYear.terms.spring.finals.start.timestamp * 1000) > 0 &&
+                new Date().getTime() - (academicYear.terms.spring.finals.start.timestamp * 1000) < new Date().getTime() - (nearestTerm.finals.start.timestamp)) {
+                nearestTerm = academicYear.terms.spring;
             }
 
             setTerm(nearestTerm.term_data.name);
 
             const res: FinalsApiResponse = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${nearestTerm.term_data.term_code}`)).json();
-            (window as any).finals = res; // for debugging
             res.output = res.output.filter(e => e.course.startsWith('CS '));
             const finals = res.output.map((e): FinalProps => {
                 const date = `${e.day} 2019`;
@@ -80,6 +79,7 @@ const Home: FC = () => {
                     return acc;
                 }
             }));
+            finals.sort((f1, f2) => f1.finalStart.getTime() - f2.finalStart.getTime());
             setFinals(finals);
         }
         fetchData();
