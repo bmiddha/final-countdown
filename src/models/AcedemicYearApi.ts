@@ -1,9 +1,9 @@
-interface AcedemicYear {
+export interface AcedemicYear {
     code: string;
     description: string;
 };
 
-interface TermData {
+export interface TermData {
     term_code: string;
     semester: string;
     term_description: string;
@@ -12,14 +12,14 @@ interface TermData {
     academic_year: AcedemicYear;
 };
 
-interface GradeProcessing {
+export interface GradeProcessing {
     due: TermsTimestamp | null;
     comment: TermsTimestamp | null;
     student_available: TermsTimestamp | null;
     view_direct: TermsTimestamp | null;
 };
 
-interface TermsDatestamp {
+export interface TermsDatestamp {
     iso_8601: string;
     human_readable: string;
     week_starting: string
@@ -30,7 +30,7 @@ interface TermsDatestamp {
     utc_offset: number;
 }
 
-interface CampusCertificates {
+export interface CampusCertificates {
     application_submission: TermPeriod;
     program_review: TermPeriod;
     college_review: TermPeriod;
@@ -38,37 +38,37 @@ interface CampusCertificates {
     system_audit: TermPeriod;
 };
 
-interface Week extends TermPeriod {
+export interface Week extends TermPeriod {
     week_number: number;
 };
 
-interface TermsTimestamp {
+export interface TermsTimestamp {
     datestamp: TermsDatestamp;
     timestamp: number;
     timestamp_eod: number;
 };
 
-interface TermPeriod {
+export interface TermPeriod {
     start: TermsTimestamp;
     stop: TermsTimestamp;
 };
 
-interface SummerSession<T> {
+export interface SummerSession<T> {
     session_1: T;
     session_2: T;
 };
 
-interface Grades {
+export interface Grades {
     mid_term_processing: GradeProcessing;
     full_term_processing: GradeProcessing;
 };
 
-interface SummerGrades {
+export interface SummerGrades {
     mid_term_processing: SummerSession<GradeProcessing>;
     full_term_processing: SummerSession<GradeProcessing>;
 };
 
-interface Term {
+export interface Term {
     term_data: TermData;
     instruction: TermPeriod;
     finals: TermPeriod;
@@ -81,7 +81,7 @@ interface Term {
 };
 
 
-interface SummerTerm {
+export interface SummerTerm {
     term_data: TermData;
     instruction: SummerSession<TermPeriod>;
     finals: SummerSession<TermPeriod>;
@@ -93,7 +93,7 @@ interface SummerTerm {
     weeks: Week[];
 };
 
-interface Terms {
+export interface Terms {
     fall: Term;
     spring: Term;
     summer: SummerTerm;

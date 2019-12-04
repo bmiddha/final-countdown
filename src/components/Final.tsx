@@ -19,9 +19,10 @@ const Final: FC<FinalProps> = (props: FinalProps) => {
     const humanizeTime = (d: Date) => `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
     return (
         <div className='final'>
-            <p className='finalNum darkCoolShadow'>{props.department} {props.course} {props.crn}</p>
+            <p className='finalNum darkCoolShadow'>{props.department}{props.course}</p>
             <p className='finalCountdown darkCoolShadow'><Countdown endMessage='ongoing' timer={props.finalStart} /></p>
             <p className='finalTime'>{humanizeDate(props.finalStart)}: {humanizeTime(props.finalStart)}- {humanizeTime(props.finalEnd)}</p>
+            <p className="finalCrn">{props.crn}</p>
             <p className='finalLocation'><span>{props.location}</span></p>
             {props.comments}
         </div>

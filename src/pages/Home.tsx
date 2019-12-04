@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import Countdown from '../components/Countdown';
 import Finals from '../components/Finals';
 import { FinalProps } from '../components/Final';
+import * as AcedemicYearApi from '../models/AcedemicYearApi';
 
 interface FinalsApiResponseArray {
     type: string;
@@ -22,31 +23,24 @@ const Home: FC = () => {
 
     const [finals, setFinals] = useState<FinalProps[]>([]);
     const [lastFinal, setLastFinal] = useState<FinalProps>();
+    const [term, setTerm] = useState('');
     useEffect(() => {
         const fetchData = async () => {
             // get term and year
-            // const year = await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json')).json();
-            // acedemicYear.terms.fall.finals.start.timestamp * 1000
-            // acedemicYear.terms.fall.finals.stop.timestamp_eod * 1000
-            // acedemicYear.terms.spring.finals.start.timestamp * 1000
-            // acedemicYear.terms.spring.finals.stop.timestamp_eod * 1000
-            // acedemicYear.terms.summer.finals.session_1.start.timestamp * 1000
-            // acedemicYear.terms.summer.finals.session_1.stop.timestamp_eod * 1000
-            // acedemicYear.terms.summer.finals.session_2.start.timestamp * 1000
-            // acedemicYear.terms.summer.finals.session_2.stop.timestamp_eod * 1000
-            // if (acedemicYear.terms.fall.finals.start.timestamp * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.fall.finals.stop.timestamp_eod * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.spring.finals.start.timestamp * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.spring.finals.stop.timestamp_eod * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.summer.finals.session_1.start.timestamp * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.summer.finals.session_1.stop.timestamp_eod * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.summer.finals.session_2.start.timestamp * 1000 - new Date().getTime() > 0) {}
-            // else if (acedemicYear.terms.summer.finals.session_2.stop.timestamp_eod * 1000 - new Date().getTime() > 0) {}
+            const acedemicYear: AcedemicYearApi.Response = await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json')).json();
+            (window as any).acedemicYear = acedemicYear; // for debugging
 
+            let nearestTerm: AcedemicYearApi.Term = acedemicYear.terms.fall;
+            // TODO: Add support for summer semester
+            if (new Date().getTime() - (acedemicYear.terms.spring.finals.start.timestamp * 1000) > 0 &&
+                new Date().getTime() - (acedemicYear.terms.spring.finals.start.timestamp * 1000) < new Date().getTime() - (nearestTerm.finals.start.timestamp)) {
+                nearestTerm = acedemicYear.terms.spring;
+            }
 
-            const res: FinalsApiResponse = await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=220198')).json();
-            // const res: FinalsApiResponse = finalsApi;
-            (window as any).res = res; // for debugging
+            setTerm(nearestTerm.term_data.name);
+
+            const res: FinalsApiResponse = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${nearestTerm.term_data.term_code}`)).json();
+            (window as any).finals = res; // for debugging
             res.output = res.output.filter(e => e.course.startsWith('CS '));
             const finals = res.output.map((e): FinalProps => {
                 const date = `${e.day} 2019`;
@@ -94,14 +88,11 @@ const Home: FC = () => {
 
     }, []);
 
-    const semester = '';
-    const year = '';
-
     return (
         <>
 
             <div id='topbar' className='lightCoolShadow'>
-                <h1>{lastFinal ? <>{semester} {year} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
+                <h1>{lastFinal ? <>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
             </div>
             <div id='finalsContainer'>
                 <Finals finals={finals} />
