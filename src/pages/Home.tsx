@@ -46,7 +46,8 @@ const Home: FC = () => {
             setTerm(nearestTerm.term_data.name);
 
             const res: FinalsApiResponse = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${nearestTerm.term_data.term_code}`)).json();
-            const finals = res.output.map((e): FinalProps => {
+            (window as any).rawFinals = res; // for debugging
+            let finals = res.output.map((e): FinalProps => {
                 const date = `${e.day} 2019`;
                 let startTimeHour = e.time.split(' ')[0].split(':')[0];
                 const startTimeMinute = e.time.split(' ')[0].split(':')[1];
@@ -73,8 +74,7 @@ const Home: FC = () => {
                     comments: e.comments,
                     type: e.type
                 };
-            });
-            (window as any).finals = finals; // for more debugging
+            }).sort((e1, e2) => +e1.finalStart - +e2.finalStart);
             setLastFinal(finals.reduce((acc, f) => {
                 if (!acc) {
                     return f;
@@ -84,9 +84,9 @@ const Home: FC = () => {
                     return acc;
                 }
             }));
-            finals.sort((f1, f2) => f1.finalStart.getTime() - f2.finalStart.getTime());
+            (window as any).finals = finals; // for more debugging
             setAllFinals(finals);
-        }
+        };
         setShowAlert(true);
         fetchData();
     }, []);
