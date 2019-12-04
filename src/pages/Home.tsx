@@ -28,6 +28,7 @@ const Home: FC = () => {
     const [filterString, setFilterString] = useState<string>('');
     const [lastFinal, setLastFinal] = useState<FinalProps>();
     const [term, setTerm] = useState('');
+    const [showAlert, setShowAlert] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -86,10 +87,11 @@ const Home: FC = () => {
             finals.sort((f1, f2) => f1.finalStart.getTime() - f2.finalStart.getTime());
             setAllFinals(finals);
         }
+        setShowAlert(true);
         fetchData();
     }, []);
 
-    const filterFinals = useCallback((list: FinalProps[],f: string) => {
+    const filterFinals = useCallback((list: FinalProps[], f: string) => {
         const regex = new RegExp(f, 'g');
         setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)));
     }, []);
@@ -120,6 +122,18 @@ const Home: FC = () => {
                     <button className='btn btn-outline-success my-2 my-sm-0' type='submit'>Filter</button>
                 </form>
             </nav>
+            {showAlert ?
+            <div className='alert alert-primary alert-dismissible fade show' role='alert'>
+                <h4 className='alert-heading'>Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>.</h4>
+                <hr />
+                <p>
+                    Install the progressive web app on your phone. Visit <a className='alert-link' href='https://final-countdown.azurewebsites.net'>https://final-countdown.azurewebsites.net</a>.
+                    
+                </p>
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => setShowAlert(false)}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> : <></>}
             <div className='container py-4'>
                 <div className='col'>
                     <h1 className='m-4 text-center'>{lastFinal ? <>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
