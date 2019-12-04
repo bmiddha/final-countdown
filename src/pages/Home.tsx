@@ -38,8 +38,8 @@ const Home: FC = () => {
 
             let nearestTerm: AcademicYearApi.Term = academicYear.terms.fall;
             // TODO: Add support for summer semester
-            if (new Date().getTime() - (academicYear.terms.spring.finals.start.timestamp * 1000) > 0 &&
-                new Date().getTime() - (academicYear.terms.spring.finals.start.timestamp * 1000) < new Date().getTime() - (nearestTerm.finals.start.timestamp)) {
+            if (+new Date() - (academicYear.terms.spring.finals.start.timestamp * 1000) > 0 &&
+                +new Date() - (academicYear.terms.spring.finals.start.timestamp * 1000) < +new Date() - (nearestTerm.finals.start.timestamp)) {
                 nearestTerm = academicYear.terms.spring;
             }
 
@@ -47,7 +47,7 @@ const Home: FC = () => {
 
             const res: FinalsApiResponse = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${nearestTerm.term_data.term_code}`)).json();
             (window as any).rawFinals = res; // for debugging
-            let finals = res.output.map((e): FinalProps => {
+            const finals = res.output.map((e): FinalProps => {
                 const date = `${e.day} 2019`;
                 let startTimeHour = e.time.split(' ')[0].split(':')[0];
                 const startTimeMinute = e.time.split(' ')[0].split(':')[1];
@@ -78,7 +78,7 @@ const Home: FC = () => {
             setLastFinal(finals.reduce((acc, f) => {
                 if (!acc) {
                     return f;
-                } else if (f.finalEnd.getTime() > acc.finalEnd.getTime()) {
+                } else if (+f.finalEnd > +acc.finalEnd) {
                     return f;
                 } else {
                     return acc;
@@ -93,7 +93,8 @@ const Home: FC = () => {
 
     const filterFinals = useCallback((list: FinalProps[], f: string) => {
         const regex = new RegExp(f, 'g');
-        setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)));
+        setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).sort((e1, e2) => +e1.finalStart - +e2.finalStart));
+
     }, []);
     useEffect(() => {
         const filterCache = window.localStorage.getItem('filterString');
