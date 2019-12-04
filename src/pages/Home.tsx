@@ -116,7 +116,7 @@ const Home: FC = () => {
             <nav className='navbar navbar-light bg-light'>
                 <a className='navbar-brand' href='/'><img src='/icon-120.png' width='30' height='30' alt='' /> Final Countdown</a>
                 <form className='form-inline' onSubmit={handleSubmit}>
-                    <input className='form-control mr-sm-2' type='search' placeholder='Regex Filter' aria-label='Regex Filter' onChange={updateFilterString} />
+                    <input className='form-control mr-sm-2' type='search' placeholder='Regex Filter' aria-label='Regex Filter' value={filterString} onChange={updateFilterString} />
                     <button className='btn btn-outline-success my-2 my-sm-0' type='submit'>Filter</button>
                 </form>
             </nav>
