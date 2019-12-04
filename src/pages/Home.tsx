@@ -1,8 +1,10 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useCallback } from 'react';
 import Countdown from '../components/Countdown';
 import Finals from '../components/Finals';
 import { FinalProps } from '../components/Final';
 import * as AcademicYearApi from '../models/AcademicYearApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface FinalsApiResponseArray {
     type: string;
@@ -21,9 +23,12 @@ interface FinalsApiResponse {
 
 const Home: FC = () => {
 
+    const [allFinals, setAllFinals] = useState<FinalProps[]>([]);
     const [finals, setFinals] = useState<FinalProps[]>([]);
+    const [filterString, setFilterString] = useState<string>('');
     const [lastFinal, setLastFinal] = useState<FinalProps>();
     const [term, setTerm] = useState('');
+
     useEffect(() => {
         const fetchData = async () => {
             // get term and year
@@ -40,7 +45,6 @@ const Home: FC = () => {
             setTerm(nearestTerm.term_data.name);
 
             const res: FinalsApiResponse = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${nearestTerm.term_data.term_code}`)).json();
-            res.output = res.output.filter(e => e.course.startsWith('CS '));
             const finals = res.output.map((e): FinalProps => {
                 const date = `${e.day} 2019`;
                 let startTimeHour = e.time.split(' ')[0].split(':')[0];
@@ -80,25 +84,54 @@ const Home: FC = () => {
                 }
             }));
             finals.sort((f1, f2) => f1.finalStart.getTime() - f2.finalStart.getTime());
-            setFinals(finals);
+            setAllFinals(finals);
         }
         fetchData();
-
-
-
     }, []);
+
+    const filterFinals = useCallback((list: FinalProps[],f: string) => {
+        const regex = new RegExp(f, 'g');
+        setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)));
+    }, []);
+    useEffect(() => {
+        const filterCache = window.localStorage.getItem('filterString');
+        if (filterCache) {
+            setFilterString(filterCache);
+            filterFinals(allFinals, filterCache);
+        }
+    }, [allFinals, filterFinals]);
+
+    const updateFilterString = (e: React.FormEvent<HTMLInputElement>) => {
+        setFilterString(e.currentTarget.value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        window.localStorage.setItem('filterString', filterString);
+        filterFinals(allFinals, filterString);
+    };
 
     return (
         <>
-
-            <div id='topbar' className='lightCoolShadow'>
-                <h1>{lastFinal ? <>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
+            <nav className='navbar navbar-light bg-light'>
+                <a className='navbar-brand' href='/'><img src='/icon-120.png' width='30' height='30' alt='' /> Final Countdown</a>
+                <form className='form-inline' onSubmit={handleSubmit}>
+                    <input className='form-control mr-sm-2' type='search' placeholder='Regex Filter' aria-label='Regex Filter' onChange={updateFilterString} />
+                    <button className='btn btn-outline-success my-2 my-sm-0' type='submit'>Filter</button>
+                </form>
+            </nav>
+            <div className='container py-4'>
+                <div className='col'>
+                    <h1 className='m-4 text-center'>{lastFinal ? <>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
+                </div>
             </div>
-            <div id='finalsContainer'>
-                <Finals finals={finals} />
-            </div>
-            <footer className='lightCoolShadow'>
-                <a href='https://github.com/bmiddha/final-countdown'>github.com/bmiddha/final-countdown</a>
+            <Finals finals={finals} />
+            <footer className='container py-4'>
+                <div className='col'>
+                    <p className='lead text-center'>
+                        <a href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>
+                    </p>
+                </div>
             </footer>
         </>
     );
