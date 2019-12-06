@@ -21,6 +21,10 @@ interface FinalsApiResponse {
     output: FinalsApiResponseArray[];
 }
 
+const UserConfigOptions = [
+    'filterString'
+]
+
 const Home: FC = () => {
 
     const [allFinals, setAllFinals] = useState<FinalProps[]>([]);
@@ -89,6 +93,16 @@ const Home: FC = () => {
             (window as any).finals = finals; // for more debugging
             setAllFinals(finals);
         };
+        if (window.location.search.length !== 0) {
+            const search = window.location.search.substring(1);
+            const params = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+            Object.keys(params).forEach(key => {
+                if (UserConfigOptions.indexOf(key) !== -1 && params[key].trim().length !== 0) {
+                    localStorage.setItem(key, decodeURIComponent(params[key]));
+                }
+            });
+            window.location.href = '/';
+        }
         setShowAlert(true);
         fetchData();
     }, []);
