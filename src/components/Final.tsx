@@ -32,8 +32,8 @@ const Final: FC<FinalProps> = (props: FinalProps) => {
     const humanizeTime = (d: Date) => `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
     const border = isEnded ? 'border-success' : isOngoing ? 'border-warning' : +props.finalStart - +new Date() < 30 * 60 * 1000 ? 'border-primary' : '';
     return (
-        <div className='col-sm-3 m-3'>
-            <div className={`card final ${border}`}>
+        <div className='col'>
+            <div className={`card final mx-auto ${border}`}>
                 <div className={`card-header ${border}`}>
                     <h4 className='card-title'>{props.department} {props.course} {props.crn}</h4>
                 </div>

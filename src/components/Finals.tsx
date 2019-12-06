@@ -8,8 +8,8 @@ interface FinalsProps {
 const Finals: FC<FinalsProps> = ({ finals }: FinalsProps) => {
 
     return (
-        <div className="container">
-            <div className="row">
+        <div className='container'>
+            <div className='card-deck'>
                 {finals.map((f: FinalProps, key: number) =>
                     <Final key={key} {...f} />
                 )}
