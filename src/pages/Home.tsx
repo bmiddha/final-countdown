@@ -74,7 +74,9 @@ const Home: FC = () => {
                     comments: e.comments,
                     type: e.type
                 };
-            }).sort((e1, e2) => +e1.finalStart - +e2.finalStart);
+            })
+                .filter(e => +e.finalEnd > +new Date())
+                .sort((e1, e2) => +e1.finalStart - +e2.finalStart);
             setLastFinal(finals.reduce((acc, f) => {
                 if (!acc) {
                     return f;
@@ -94,8 +96,17 @@ const Home: FC = () => {
     const filterFinals = useCallback((list: FinalProps[], f: string) => {
         const regex = new RegExp(f, 'g');
         setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).sort((e1, e2) => +e1.finalStart - +e2.finalStart));
-
     }, []);
+
+    useEffect(() => {
+        const updateInterval = setInterval(() => {
+            setFinals(finals.filter(e => +e.finalEnd > +new Date()));
+        }, 15 * 60 * 1000);
+        return (() => {
+            clearInterval(updateInterval);
+        });
+    }, [finals]);
+
     useEffect(() => {
         const filterCache = window.localStorage.getItem('filterString');
         if (filterCache) {
@@ -124,17 +135,16 @@ const Home: FC = () => {
                 </form>
             </nav>
             {showAlert ?
-            <div className='alert alert-primary alert-dismissible fade show' role='alert'>
-                <h4 className='alert-heading'>Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>.</h4>
-                <hr />
-                <p>
-                    Install the progressive web app on your phone. Visit <a className='alert-link' href='https://final-countdown.azurewebsites.net'>https://final-countdown.azurewebsites.net</a>.
-                    
+                <div className='alert alert-primary alert-dismissible fade show' role='alert'>
+                    <h4 className='alert-heading'>Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>.</h4>
+                    <hr />
+                    <p>
+                        Install the progressive web app on your phone. Visit <a className='alert-link' href='https://final-countdown.azurewebsites.net'>https://final-countdown.azurewebsites.net</a>.
                 </p>
-                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => setShowAlert(false)}>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div> : <></>}
+                    <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => setShowAlert(false)}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> : <></>}
             <div className='container py-4'>
                 <div className='col'>
                     <h1 className='m-4 text-center'>{lastFinal ? <>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={lastFinal.finalEnd} /></span></> : <></>}</h1>
