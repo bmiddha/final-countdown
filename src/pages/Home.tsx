@@ -4,6 +4,7 @@ import Finals from '../components/Finals';
 import { FinalProps } from '../components/Final';
 import * as AcademicYearApi from '../models/AcademicYearApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface FinalsApiResponseArray {
@@ -76,10 +77,10 @@ const Home: FC = () => {
                     crn: courseSplit[3],
                     course: courseSplit[1],
                     comments: e.comments,
-                    type: e.type
+                    type: e.type,
+                    instructor: ''
                 };
-            })
-                .filter(e => +e.finalEnd > +new Date())
+            }).filter(e => +e.finalEnd > +new Date())
                 .sort((e1, e2) => +e1.finalStart - +e2.finalStart);
             setLastFinal(finals.reduce((acc, f) => {
                 if (!acc) {
@@ -133,18 +134,12 @@ const Home: FC = () => {
         setFilterString(e.currentTarget.value);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        window.localStorage.setItem('filterString', filterString);
-        filterFinals(allFinals, filterString);
-    };
-
     return (
         <>
             <nav className='navbar navbar-light bg-light'>
                 <a className='navbar-brand' href='/'><img src='/icon-120.png' width='30' height='30' alt='' /> Final Countdown</a>
-                <form className='form-inline' onSubmit={handleSubmit}>
-                    <input className='form-control mr-sm-2' type='search' placeholder='Regex Filter' aria-label='Regex Filter' value={filterString} onChange={updateFilterString} />
+                <form className='form-inline' method='GET'>
+                    <input className='form-control mr-sm-2' name='filterString' type='search' placeholder='Regex Filter' aria-label='Regex Filter' value={filterString} onChange={updateFilterString} />
                     <button className='btn btn-outline-success my-2 my-sm-0' type='submit'>Filter</button>
                 </form>
             </nav>
@@ -168,7 +163,8 @@ const Home: FC = () => {
             <footer className='container py-4'>
                 <div className='col'>
                     <p className='lead text-center'>
-                        <a href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>
+                        <a href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faCode} /> with <FontAwesomeIcon icon={faHeart} /> by Bharat Middha.<br />
+                            <FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>
                     </p>
                 </div>
             </footer>

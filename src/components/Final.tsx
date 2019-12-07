@@ -14,6 +14,7 @@ export interface FinalProps {
     finalEnd: Date;
     location: string;
     comments: string;
+    instructor: string;
 };
 
 const Final: FC<FinalProps> = (props: FinalProps) => {
@@ -32,7 +33,7 @@ const Final: FC<FinalProps> = (props: FinalProps) => {
     const humanizeTime = (d: Date) => `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
     const border = isEnded ? 'border-success' : isOngoing ? 'border-warning' : +props.finalStart - +new Date() < 30 * 60 * 1000 ? 'border-primary' : '';
     return (
-        <div className='col'>
+        <div className='col mb-4'>
             <div className={`card final mx-auto ${border}`}>
                 <div className={`card-header ${border}`}>
                     <h4 className='card-title'>{props.department} {props.course} {props.crn}</h4>
@@ -44,7 +45,7 @@ const Final: FC<FinalProps> = (props: FinalProps) => {
                     }
                     </h4>
                     <h5><FontAwesomeIcon icon={faMapMarkerAlt} />{props.location}</h5>
-                    <p className='card-text'>{props.comments}</p>
+                    <p className='card-text'>{props.comments} {props.instructor}</p>
                 </div>
                 <div className={`card-footer ${border}`}>
                     <FontAwesomeIcon icon={faClock} /> {humanizeDate(props.finalStart)} {humanizeTime(props.finalStart)}- {humanizeTime(props.finalEnd)}
