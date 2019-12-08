@@ -15,7 +15,8 @@ const FinalsList: FC<FinalsListProps> = ({ filter }) => {
     const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
     const [finals, setFinals] = useState<FinalModel[]>([]);
     const [lastFinal, setLastFinal] = useState<FinalModel>();
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState<string>('');
+    const [noFilter, setNoFilter] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,7 +49,10 @@ const FinalsList: FC<FinalsListProps> = ({ filter }) => {
     }, []);
 
     useEffect(() => {
-        filterFinals(allFinals, filter.length === 0 ? '^$' : filter);
+        const isFilterEmpty = (filter.length === 0);
+        setNoFilter(isFilterEmpty);
+        filterFinals(allFinals, isFilterEmpty? '^$' : filter);
+
     }, [allFinals, filterFinals, filter]);
 
     useEffect(() => {
@@ -62,6 +66,9 @@ const FinalsList: FC<FinalsListProps> = ({ filter }) => {
 
     return (
         <>
+            {noFilter ? <div className='alert alert-info' role='alert'>
+                No filter specified. Please specify a filter.
+            </div> : <></>}
             {lastFinal ? <GraduationCountdown term={term} timer={lastFinal.finalEnd} /> : <></>}
             <div className='container-fluid'>
                 <div className='card-deck'>
