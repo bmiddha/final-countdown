@@ -1,6 +1,11 @@
 name: Docker CI
 
-on: push
+on:
+  push:
+    branches:
+      - '*'
+      - '!next'
+      - '!master'
 
 jobs:
   build-image:

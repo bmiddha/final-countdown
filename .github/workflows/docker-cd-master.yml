@@ -1,0 +1,17 @@
+name: Docker CD - master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: build-image
+      run: |
+        docker build -t ${{ secrets.REGISTRY_HOST }}/${{ github.repository }} .
+        docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_HOST }}
+        docker push ${{ secrets.REGISTRY_HOST }}/${{ github.repository }}
