@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
-const Config: FC = () => {
+const MyFinals: FC = () => {
 
     return (
         <>
-         CONFIG
+         MYFINALS
         </>
     );
 };
 
-export default Config;
+export default MyFinals;

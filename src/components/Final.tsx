@@ -3,21 +3,10 @@ import Countdown from './Countdown';
 import { DaysShortNames, MonthShortNames } from '../models/Date';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassHalf, faHourglassStart, faHourglassEnd, faMapMarkerAlt, faClock } from '@fortawesome/free-solid-svg-icons';
+import { FinalModel } from '../models/Final';
 import './Final.css';
 
-export interface FinalProps {
-    type: string;
-    department: string;
-    course: string;
-    crn: string;
-    finalStart: Date;
-    finalEnd: Date;
-    location: string;
-    comments: string;
-    instructor: string;
-};
-
-const Final: FC<FinalProps> = (props: FinalProps) => {
+const Final: FC<FinalModel> = (props: FinalModel) => {
 
     const [isOngoing, setIsOngoing] = useState(false);
     const [isEnded, setIsEnded] = useState(false);
