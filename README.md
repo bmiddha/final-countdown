@@ -4,6 +4,13 @@ Final Exam Schedule for UIC with countdowns. Deployed on Azure App Service: [htt
 
 This is a progressive web app (PWA) written in TypeScript and React.js.
 
+## Deployments
+
+| Branch | Docker Image Tag | Deployment URL                                 |
+| ------ | ---------------- | ---------------------------------------------- |
+| master | latest           | https://final-countdown.azurewebsites.net      |
+| next   | next             | https://final-countdown-next.azurewebsites.net |
+
 ## Screenshots
 
 ![Screenshot](https://github.com/bmiddha/final-countdown/raw/master/screenshots/ss-1.png)
