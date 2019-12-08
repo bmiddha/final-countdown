@@ -1,5 +1,7 @@
 FROM node:12-alpine as build
 
+LABEL maintainer="5100938+bmiddha@users.noreply.github.com"
+
 WORKDIR /app
 COPY package.json /app/package.json
 RUN npm install --silent
