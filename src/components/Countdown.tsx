@@ -35,7 +35,7 @@ const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) =>
     });
 
     return (
-        <span>
+        <span className='text-monospace'>
             {timeLeft.difference > 0 ? <>{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</> : <span>{endMessage}</span>}
         </span>
     );
