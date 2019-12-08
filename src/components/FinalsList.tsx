@@ -10,7 +10,7 @@ interface FinalsListProps {
     filter: string;
 }
 
-const FinalsList: FC<FinalsListProps> = ({filter}) => {
+const FinalsList: FC<FinalsListProps> = ({ filter }) => {
 
     const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
     const [finals, setFinals] = useState<FinalModel[]>([]);
@@ -46,9 +46,9 @@ const FinalsList: FC<FinalsListProps> = ({filter}) => {
         const regex = new RegExp(f, 'g');
         setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).sort((e1, e2) => +e1.finalStart - +e2.finalStart));
     }, []);
-    
+
     useEffect(() => {
-        filterFinals(allFinals, filter);
+        filterFinals(allFinals, filter.length === 0 ? '^$' : filter);
     }, [allFinals, filterFinals, filter]);
 
     useEffect(() => {
