@@ -9,7 +9,7 @@ interface GraduationCountdownProps {
 const GraduationCountdown: FC<GraduationCountdownProps> = ({ term, timer }: GraduationCountdownProps) => (
     <div className='container py-4'>
         <div className='col'>
-            <h1 className='m-4 text-center'>{term} Graduation <span className='countdown'><Countdown endMessage='Yay' timer={timer} /></span></h1>
+            <h1 className='m-4 text-center'>{term} Graduation <span className='countdown'><Countdown endMessage='🎉' timer={timer} /></span></h1>
         </div>
     </div>
 );
