@@ -6,7 +6,7 @@ on:
       - next
 
 jobs:
-  build-image:
+  build-deploy-next:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
