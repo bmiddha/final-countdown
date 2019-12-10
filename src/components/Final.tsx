@@ -12,10 +12,13 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
     const [isEnded, setIsEnded] = useState(false);
 
     useEffect(() => {
-        if (+props.finalStart < +new Date())
+        if (+props.finalStart < +new Date()) {
             setIsOngoing(true);
-        if (+props.finalEnd < +new Date())
+        }
+        if (+props.finalEnd < +new Date()) {
+            setIsOngoing(false);
             setIsEnded(true);
+        }
     }, [props.finalStart, props.finalEnd]);
 
     const humanizeDate = (d: Date) => `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
@@ -30,14 +33,14 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
                 <div className={`card-body ${border}`}>
                     <h4 className='card-subtitle mb-4 text-muted'><FontAwesomeIcon icon={isEnded ? faHourglassEnd : isOngoing ? faHourglassHalf : faHourglassStart} /> {
                         isEnded ? 'ended'
-                            : <><Countdown timer={isOngoing ? props.finalEnd : props.finalEnd} /> {isOngoing ? '(ongoing)' : ''}</>
+                            : <><Countdown timer={isOngoing ? props.finalEnd : props.finalStart} /> {isOngoing ? '(ongoing)' : ''}</>
                     }
                     </h4>
                     <h5><FontAwesomeIcon icon={faMapMarkerAlt} />{props.location}</h5>
                     <p className='card-text'>{props.comments} {props.instructor}</p>
                 </div>
                 <div className={`card-footer ${border}`}>
-                    <FontAwesomeIcon icon={faClock} /> {humanizeDate(props.finalStart)} {humanizeTime(props.finalStart)}- {humanizeTime(props.finalEnd)}
+                    <FontAwesomeIcon icon={faClock} /> {humanizeDate(props.finalStart)} {humanizeTime(props.finalStart)} - {humanizeTime(props.finalEnd)}
                 </div>
             </div>
         </div>
