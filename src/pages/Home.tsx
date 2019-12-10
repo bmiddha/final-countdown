@@ -15,7 +15,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
 
     const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
     const [finals, setFinals] = useState<FinalModel[]>([]);
-    const [lastFinal, setLastFinal] = useState<FinalModel>();
+    const [endOfFinals, setEndOfFinals] = useState<Date>();
     const [term, setTerm] = useState<string>('');
     const [noFilter, setNoFilter] = useState<boolean>(false);
 
@@ -29,16 +29,8 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
                 nearestTerm = academicYear.terms.spring;
             }
             setTerm(nearestTerm.term_data.name);
+            setEndOfFinals(new Date(nearestTerm.finals.stop.timestamp_eod * 1000));
             const finals = await GetFinals(nearestTerm.term_data.term_code);
-            setLastFinal(finals.reduce((acc, f) => {
-                if (!acc) {
-                    return f;
-                } else if (+f.finalEnd > +acc.finalEnd) {
-                    return f;
-                } else {
-                    return acc;
-                }
-            }));
             setAllFinals(finals);
         };
         fetchData();
@@ -69,7 +61,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
             {noFilter ? <div className='alert alert-info' role='alert'>
                 No filter specified. Please specify a filter.
             </div> : <></>}
-            {lastFinal ? <GraduationCountdown term={term} timer={lastFinal.finalEnd} /> : <></>}
+            {endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <></>}
             <FinalsList finals={finals} />
         </>
     );
