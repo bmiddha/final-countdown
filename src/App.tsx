@@ -10,10 +10,12 @@ import BetaAlert from './components/BetaAlert';
 const App: FC = () => {
 
   const UserConfigOptions = [
-    'filterString'
+    'filterString',
+    'viewCount'
   ];
 
   const [filterString, setFilterString] = useState<string>('');
+  const [viewCount, setViewCount] = useState<number>(20);
 
   if (window.location.search.length !== 0) {
     const search = window.location.search.substring(1);
@@ -33,8 +35,12 @@ const App: FC = () => {
 
   useEffect(() => {
     const filterCache = window.localStorage.getItem('filterString');
+    const viewCount = window.localStorage.getItem('viewCount');
     if (filterCache) {
       setFilterString(filterCache);
+    }
+    if (viewCount && parseInt(viewCount)) {
+      setViewCount(parseInt(viewCount));
     }
   }, []);
 
@@ -50,7 +56,7 @@ const App: FC = () => {
           <MyFinals />
         </Route>
         <Route path='/'>
-          <Home filter={filterString} />
+          <Home filter={filterString} viewCount={viewCount} />
         </Route>
       </Switch>
       <Footer />

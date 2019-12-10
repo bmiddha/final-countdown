@@ -8,9 +8,10 @@ import { Term } from '../models/AcademicYearApi';
 
 interface HomeProps {
     filter: string;
+    viewCount: number;
 }
 
-const Home: FC<HomeProps> = ({ filter }) => {
+const Home: FC<HomeProps> = ({ filter, viewCount }) => {
 
     const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
     const [finals, setFinals] = useState<FinalModel[]>([]);
@@ -45,23 +46,23 @@ const Home: FC<HomeProps> = ({ filter }) => {
 
     const filterFinals = useCallback((list: FinalModel[], f: string) => {
         const regex = new RegExp(f, 'g');
-        setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).sort((e1, e2) => +e1.finalStart - +e2.finalStart));
-    }, []);
+        setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).filter(e => +e.finalEnd > +new Date()).sort((e1, e2) => +e1.finalStart - +e2.finalStart).splice(0, viewCount));
+    }, [viewCount]);
 
     useEffect(() => {
         const isFilterEmpty = (filter.length === 0);
         setNoFilter(isFilterEmpty);
         filterFinals(allFinals, isFilterEmpty ? '^$' : filter);
-    }, [allFinals, filterFinals, filter]);
+    }, [allFinals, filterFinals, filter, viewCount]);
 
     useEffect(() => {
         const updateInterval = setInterval(() => {
-            setFinals(finals.filter(e => +e.finalEnd > +new Date()));
-        }, 15 * 60 * 1000);
+            filterFinals(finals, filter);
+        }, 5 * 60 * 1000);
         return (() => {
             clearInterval(updateInterval);
         });
-    }, [finals]);
+    }, [finals, filterFinals, filter, viewCount]);
 
     return (
         <>
