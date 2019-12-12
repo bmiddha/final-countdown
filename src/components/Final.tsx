@@ -12,13 +12,8 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
     const [isEnded, setIsEnded] = useState(false);
 
     useEffect(() => {
-        if (+props.finalStart < +new Date()) {
-            setIsOngoing(true);
-        }
-        if (+props.finalEnd < +new Date()) {
-            setIsOngoing(false);
-            setIsEnded(true);
-        }
+        setIsOngoing(+props.finalStart < +new Date());
+        setIsEnded(+props.finalEnd < +new Date());
     }, [props.finalStart, props.finalEnd]);
 
     const humanizeDate = (d: Date) => `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
