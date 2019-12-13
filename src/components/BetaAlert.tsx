@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import Config from '../Config';
 
 const BetaAlert: FC = () => {
     const [showAlert, setShowAlert] = useState(true);
@@ -9,7 +10,7 @@ const BetaAlert: FC = () => {
         setShowAlert(true);
     }, []);
 
-    return ( showAlert?
+    return ( Config.showBetaAlert && showAlert?
         <div className='alert alert-primary alert-dismissible fade show' role='alert'>
             <h4 className='alert-heading' > Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>.</h4>
             <hr />

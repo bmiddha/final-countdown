@@ -2,10 +2,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React, { FC, useState, useEffect } from 'react';
 import Home from './pages/Home';
 import MyFinals from './pages/MyFinals';
-import Config from './pages/Config';
+import ConfigPage from './pages/Config';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BetaAlert from './components/BetaAlert';
+import Config from './Config';
 
 const App: FC = () => {
 
@@ -14,8 +15,8 @@ const App: FC = () => {
     'viewCount'
   ];
 
-  const [filterString, setFilterString] = useState<string>('');
-  const [viewCount, setViewCount] = useState<number>(20);
+  const [filterString, setFilterString] = useState<string>(Config.defaultFilterString);
+  const [viewCount, setViewCount] = useState<number>(Config.defaultViewCount);
 
   if (window.location.search.length !== 0) {
     const search = window.location.search.substring(1);
@@ -50,7 +51,7 @@ const App: FC = () => {
       <BetaAlert />
       <Switch>
         <Route path='/config'>
-          <Config />
+          <ConfigPage />
         </Route>
         <Route path='/myfinals'>
           <MyFinals />

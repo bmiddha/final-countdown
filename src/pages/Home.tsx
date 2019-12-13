@@ -5,6 +5,7 @@ import { FinalModel } from '../models/Final';
 import GetFinals from '../util/GetFinals';
 import GetAcademicYear from '../util/GetAcademicYear';
 import { Term } from '../models/AcademicYearApi';
+import Config from '../Config';
 
 interface HomeProps {
     filter: string;
@@ -37,7 +38,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
     }, []);
 
     const filterFinals = useCallback((list: FinalModel[], f: string) => {
-        const regex = new RegExp(f, 'g');
+        const regex = new RegExp(f, 'i');
         setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).filter(e => +e.finalEnd > +new Date()).sort((e1, e2) => +e1.finalStart - +e2.finalStart).splice(0, viewCount));
     }, [viewCount]);
 
@@ -50,7 +51,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
     useEffect(() => {
         const updateInterval = setInterval(() => {
             filterFinals(finals, filter);
-        }, 5 * 60 * 1000);
+        }, Config.homeFinalsListUpdateInterval);
         return (() => {
             clearInterval(updateInterval);
         });

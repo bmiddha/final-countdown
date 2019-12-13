@@ -1,9 +1,22 @@
 import { Response, FinalResponse } from '../models/FinalsApi';
 import { FinalModel } from '../models/Final';
+import Config from '../Config';
+
+let cache: { timestamp: Date; data: Response };
 
 const GetFinals = async (term: string): Promise<FinalModel[]> => {
-    const res: Response = await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`)).json();
-    return res.output.map((e: FinalResponse): FinalModel => {
+    const localCache = window.localStorage.getItem('finalsResponseCache');
+    if (localCache) {
+        cache = JSON.parse(localCache);
+    }
+    if (!cache || !cache.timestamp || +new Date() - +cache.timestamp > Config.cacheStaleThreshold) {
+        cache = {
+            data: await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`)).json(),
+            timestamp: new Date(),
+        };
+        window.localStorage.setItem('finalsResponseCache', JSON.stringify(cache));
+    }
+    return cache.data.output.map((e: FinalResponse): FinalModel => {
         const date = `${e.day} 2019`;
         let startTimeHour = e.time.split(' ')[0].split(':')[0];
         const startTimeMinute = e.time.split(' ')[0].split(':')[1];

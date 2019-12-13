@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglassHalf, faHourglassStart, faHourglassEnd, faMapMarkerAlt, faClock } from '@fortawesome/free-solid-svg-icons';
 import { FinalModel } from '../models/Final';
 import './Final.css';
+import Config from '../Config';
 
 const Final: FC<FinalModel> = (props: FinalModel) => {
 
@@ -12,21 +13,35 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
     const [isEnded, setIsEnded] = useState(false);
 
     useEffect(() => {
-        setIsOngoing(+props.finalStart < +new Date());
-        setIsEnded(+props.finalEnd < +new Date());
-    }, [props.finalStart, props.finalEnd]);
+        const updateInterval = setInterval(() => {
+            setIsOngoing(+props.finalStart < +new Date());
+            setIsEnded(+props.finalEnd < +new Date());
+        }, Config.countdownUpdateInterval);
+        return (() => {
+            clearInterval(updateInterval);
+        });
+    });
 
-    const humanizeDate = (d: Date) => `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
-    const humanizeTime = (d: Date) => `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
-    const border = isEnded ? 'border-success' : isOngoing ? 'border-warning' : +props.finalStart - +new Date() < 30 * 60 * 1000 ? 'border-primary' : '';
+    const humanizeDate = (d: Date) =>
+        `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
+    const humanizeTime = (d: Date) =>
+        `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours()).toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() > 11 ? 'PM' : 'AM'}`;
+    const statusClass = isEnded
+        ? 'success'
+        : isOngoing
+            ? 'info'
+            : +props.finalStart - +new Date() < Config.finalWarningBorderTime
+                ? 'primary'
+                : '';
+
     return (
         <div className='col mb-4'>
-            <div className={`card final mx-auto ${border}`}>
-                <div className={`card-header ${border}`}>
+            <div className={`card final mx-auto border-${statusClass}`}>
+                <div className={`card-header border-${statusClass}`}>
                     <h4 className='card-title'>{props.department} {props.course} {props.crn}</h4>
                 </div>
-                <div className={`card-body ${border}`}>
-                    <h4 className='card-subtitle mb-4 text-muted'><FontAwesomeIcon icon={isEnded ? faHourglassEnd : isOngoing ? faHourglassHalf : faHourglassStart} /> {
+                <div className={`card-body border-${statusClass}`}>
+                    <h4 className={`card-subtitle mb-4 text-${statusClass}`}><FontAwesomeIcon icon={isEnded ? faHourglassEnd : isOngoing ? faHourglassHalf : faHourglassStart} /> {
                         isEnded ? 'ended'
                             : <><Countdown timer={isOngoing ? props.finalEnd : props.finalStart} /> {isOngoing ? '(ongoing)' : ''}</>
                     }
@@ -34,7 +49,7 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
                     <h5><FontAwesomeIcon icon={faMapMarkerAlt} />{props.location}</h5>
                     <p className='card-text'>{props.comments} {props.instructor}</p>
                 </div>
-                <div className={`card-footer ${border}`}>
+                <div className={`card-footer border-${statusClass}`}>
                     <FontAwesomeIcon icon={faClock} /> {humanizeDate(props.finalStart)} {humanizeTime(props.finalStart)} - {humanizeTime(props.finalEnd)}
                 </div>
             </div>

@@ -17,7 +17,6 @@ const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         applyFilter(filterString);
-        // filterFinals(allFinals, filterString);
     };
 
     const updateFilterString = (e: React.FormEvent<HTMLInputElement>) => {
