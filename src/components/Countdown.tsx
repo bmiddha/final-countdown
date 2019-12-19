@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import { h, Fragment, FunctionalComponent } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import Config from '../Config';
 
 interface CountdownProps {
@@ -6,7 +7,7 @@ interface CountdownProps {
     timer: Date;
 };
 
-const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
+const Countdown: FunctionalComponent<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
     const [timeLeft, setTimeLeft] = useState(+timer - +new Date());
 
     useEffect(() => {
@@ -22,11 +23,11 @@ const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) =>
 
     return (
         <span className='text-monospace'>
-            {timeLeft >= 0 ? <>
+            {timeLeft >= 0 ? <Fragment>
                 {Math.floor((timeLeft / (1000 * 60 * 60))).toString().padStart(2, '0')}
                 :{Math.floor((timeLeft / (1000 * 60)) % 60).toString().padStart(2, '0')}
                 :{Math.floor((timeLeft / 1000) % 60).toString().padStart(2, '0')}
-            </> : <span>{endMessage}</span>}
+            </Fragment> : <span>{endMessage}</span>}
         </span>
     );
 };

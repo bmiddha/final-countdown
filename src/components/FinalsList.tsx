@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { h, Fragment, FunctionalComponent } from 'preact';
 import Final from '../components/Final';
 import { FinalModel } from '../models/Final';
 
@@ -6,8 +6,8 @@ interface FinalsListProps {
     finals: FinalModel[];
 }
 
-const FinalsList: FC<FinalsListProps> = ({ finals }) => (
-    <>
+const FinalsList: FunctionalComponent<FinalsListProps> = ({ finals }) => (
+    <Fragment>
         <div className='container-fluid'>
             <div className='card-deck'>
                 {finals.map((f: FinalModel, key: number) =>
@@ -15,7 +15,7 @@ const FinalsList: FC<FinalsListProps> = ({ finals }) => (
                 )}
             </div>
         </div>
-    </>
+    </Fragment>
 );
 
 export default FinalsList;

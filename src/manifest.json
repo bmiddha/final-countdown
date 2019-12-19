@@ -3,52 +3,52 @@
   "name": "Final Exam Schedule for UIC",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/assets/favicon.ico",
       "sizes": "128x128 64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "icon-120.png",
+      "src": "/assets/icons/icon-120.png",
       "type": "image/png",
       "sizes": "120x120"
     },
     {
-      "src": "icon-144.png",
+      "src": "/assets/icons/icon-144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
     {
-      "src": "icon-152.png",
+      "src": "/assets/icons/icon-152.png",
       "type": "image/png",
       "sizes": "152x152"
     },
     {
-      "src": "icon-167.png",
+      "src": "/assets/icons/icon-167.png",
       "type": "image/png",
       "sizes": "167x167"
     },
     {
-      "src": "icon-180.png",
+      "src": "/assets/icons/icon-180.png",
       "type": "image/png",
       "sizes": "180x180"
     },
     {
-      "src": "icon-192.png",
+      "src": "/assets/icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icon-192.png",
+      "src": "/assets/icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icon-512.png",
+      "src": "/assets/icons/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#24bfa5",
   "background_color": "#333333"

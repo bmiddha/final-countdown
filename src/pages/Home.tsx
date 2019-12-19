@@ -1,4 +1,5 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
+import { h, Fragment, FunctionalComponent } from 'preact';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 import FinalsList from '../components/FinalsList';
 import GraduationCountdown from '../components/GraduationCountdown';
 import { FinalModel } from '../models/Final';
@@ -12,11 +13,11 @@ interface HomeProps {
     viewCount: number;
 }
 
-const Home: FC<HomeProps> = ({ filter, viewCount }) => {
+const Home: FunctionalComponent<HomeProps> = ({ filter, viewCount }) => {
 
     const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
     const [finals, setFinals] = useState<FinalModel[]>([]);
-    const [endOfFinals, setEndOfFinals] = useState<Date>();
+    const [endOfFinals, setEndOfFinals] = useState<Date>(new Date());
     const [term, setTerm] = useState<string>('');
     const [noFilter, setNoFilter] = useState<boolean>(false);
 
@@ -58,13 +59,13 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
     }, [finals, filterFinals, filter, viewCount]);
 
     return (
-        <>
+        <Fragment>
             {noFilter ? <div className='alert alert-info' role='alert'>
                 No filter specified. Please specify a filter.
-            </div> : <></>}
-            {endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <></>}
+            </div> : <Fragment></Fragment>}
+            {endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <Fragment></Fragment>}
             <FinalsList finals={finals} />
-        </>
+        </Fragment>
     );
 };
 

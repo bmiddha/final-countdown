@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import { h, Fragment, FunctionalComponent } from 'preact';
 
-const Config: FC = () => {
+const Config: FunctionalComponent = () => {
 
     return (
-        <>
+        <Fragment>
          CONFIG
-        </>
+        </Fragment>
     );
 };
 

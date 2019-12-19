@@ -1,9 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { h, Fragment, FunctionalComponent } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import Config from '../Config';
 
-const BetaAlert: FC = () => {
+const BetaAlert: FunctionalComponent = () => {
     const [showAlert, setShowAlert] = useState(true);
 
     useEffect(() => {
@@ -12,7 +11,7 @@ const BetaAlert: FC = () => {
 
     return ( Config.showBetaAlert && showAlert?
         <div className='alert alert-primary alert-dismissible fade show' role='alert'>
-            <h4 className='alert-heading' > Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown</a>.</h4>
+            <h4 className='alert-heading' > Public Beta: <a className='alert-link' href='https://github.com/bmiddha/final-countdown'><i className='fab fa-github' /> github.com/bmiddha/final-countdown</a>.</h4>
             <hr />
             <p>
                 Install the progressive web app on your phone. Visit <a className='alert-link' href='https://final-countdown.azurewebsites.net'>https://final-countdown.azurewebsites.net</a>.
@@ -20,7 +19,7 @@ const BetaAlert: FC = () => {
             <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => setShowAlert(false)}>
                 <span aria-hidden="true">&times;</span>
             </button>
-        </div> : <></>
+        </div> : <Fragment></Fragment>
     );
 };
 

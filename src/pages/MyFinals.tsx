@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import { h, Fragment, FunctionalComponent } from 'preact';
 
-const MyFinals: FC = () => {
+const MyFinals: FunctionalComponent = () => {
 
     return (
-        <>
+        <Fragment>
          MYFINALS
-        </>
+        </Fragment>
     );
 };
 

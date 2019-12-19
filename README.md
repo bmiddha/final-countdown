@@ -1,5 +1,5 @@
 <p align='center'>
-    <img src='public/logo-with-name.png' width='450px' alt='Final Countdown' />
+    <img src='src/assets/icons/logo-with-name.png' width='450px' alt='Final Countdown' />
 </p>
 
 <p align='center'>
@@ -30,7 +30,7 @@
 
 Final Exam Schedule for UIC with countdowns.
 
-This is a progressive web app (PWA) written in [TypeScript](https://www.typescriptlang.org/) and [React.js](https://reactjs.org/).
+This is a progressive web app (PWA) written in [TypeScript](https://www.typescriptlang.org/) and [Preact](https://preactjs.com/).
 
 ## Deployments
 
@@ -49,7 +49,7 @@ Public Docker Images: [hub.docker.com/r/bmiddha/final-countdown](https://hub.doc
 
 - Dependencies: `npm install`
 - Building: `npm run build`
-- Developing: `npm run start`
+- Developing: `npm run dev`
 
 ## Docker Deployment
 
