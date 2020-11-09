@@ -18,7 +18,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
     const [finals, setFinals] = useState<FinalModel[]>([]);
     const [endOfFinals, setEndOfFinals] = useState<Date>();
     const [term, setTerm] = useState<string>('');
-    const [noFilter, setNoFilter] = useState<boolean>(false);
+    const [filterError, setFilterError] = useState<string>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,20 +37,32 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
         fetchData();
     }, []);
 
-    const filterFinals = useCallback((list: FinalModel[], f: string) => {
-        const regex = new RegExp(f, 'i');
+    const filterFinals = useCallback((list: FinalModel[], regex: RegExp) => {
         setFinals(list.filter(f => (`${f.department} ${f.course} ${f.crn}`).match(regex)).filter(e => +e.finalEnd > +new Date()).sort((e1, e2) => +e1.finalStart - +e2.finalStart).splice(0, viewCount));
     }, [viewCount]);
 
     useEffect(() => {
         const isFilterEmpty = (filter.length === 0);
-        setNoFilter(isFilterEmpty);
-        filterFinals(allFinals, isFilterEmpty ? '^$' : filter);
+        if (isFilterEmpty)
+            setFilterError('No filter specified. Please specify a filter.');
+        else {
+            try {
+                filterFinals(allFinals, new RegExp(isFilterEmpty ? '^$' : filter, 'i'));
+                setFilterError(undefined);
+            } catch(_) {
+                setFilterError('Invalid filter expression.');
+            }
+        }
     }, [allFinals, filterFinals, filter, viewCount]);
 
     useEffect(() => {
         const updateInterval = setInterval(() => {
-            filterFinals(finals, filter);
+            try {
+                filterFinals(finals, /filter/i);
+                setFilterError(undefined);
+            } catch(_) {
+                setFilterError('Invalid filter expression.');
+            }
         }, Config.homeFinalsListUpdateInterval);
         return (() => {
             clearInterval(updateInterval);
@@ -59,8 +71,8 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
 
     return (
         <>
-            {noFilter ? <div className='alert alert-info' role='alert'>
-                No filter specified. Please specify a filter.
+            {filterError ? <div className='alert alert-info' role='alert'>
+                {filterError}
             </div> : <></>}
             {endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <></>}
             <FinalsList finals={finals} />
