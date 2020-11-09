@@ -8,4 +8,5 @@ export interface FinalModel {
     location: string;
     comments: string;
     instructor: string;
+    sectionInfo: string;
 };

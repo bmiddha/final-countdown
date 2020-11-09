@@ -8,7 +8,7 @@ const GetAcademicYear = async (): Promise<Response> => {
     if (localCache) {
         cache = JSON.parse(localCache);
     }
-    if (!cache || !cache.timestamp || +new Date() - +cache.timestamp > Config.cacheStaleThreshold) {
+    if (!cache || !cache.timestamp || +new Date() - +new Date(cache.timestamp) > Config.cacheStaleThreshold) {
         cache = {
             data: await (await fetch('https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json')).json(),
             timestamp: new Date(),

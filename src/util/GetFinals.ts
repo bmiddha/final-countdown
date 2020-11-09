@@ -9,7 +9,7 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
     if (localCache) {
         cache = JSON.parse(localCache);
     }
-    if (!cache || !cache.timestamp || +new Date() - +cache.timestamp > Config.cacheStaleThreshold) {
+    if (!cache || !cache.timestamp || +new Date() - +new Date(cache.timestamp) > Config.cacheStaleThreshold) {
         cache = {
             data: await (await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`)).json(),
             timestamp: new Date(),
@@ -17,7 +17,7 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
         window.localStorage.setItem('finalsResponseCache', JSON.stringify(cache));
     }
     return cache.data.output.map((e: FinalResponse): FinalModel => {
-        const date = `${e.day} 2019`;
+        const date = `${e.day} ${new Date().getFullYear()}`;
         let startTimeHour = e.time.split(' ')[0].split(':')[0];
         const startTimeMinute = e.time.split(' ')[0].split(':')[1];
         let endTimeHour = e.time.split(' ')[2].split(':')[0];
@@ -33,7 +33,9 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
         }
         const finalStart = new Date(`${date} ${startTimeHour}:${startTimeMinute}`);
         const finalEnd = new Date(`${date} ${endTimeHour}:${endTimeMinute}`);
-        const courseSplit = e.course.split(' ').filter(e => e.length !== 0);
+        const courseCRNMeetingTimeSplit=  e.course.split("<br/>");
+        const sectionInfo = courseCRNMeetingTimeSplit[1];
+        const courseSplit = courseCRNMeetingTimeSplit[0].split(/[ ]+/);
         return {
             finalStart, finalEnd,
             location: `${e.building} ${e.rooms}`,
@@ -42,6 +44,7 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
             course: courseSplit[1],
             comments: e.comments,
             type: e.type,
+            sectionInfo,
             instructor: ''
         };
     }).filter((e: FinalModel) => +e.finalEnd > +new Date())
