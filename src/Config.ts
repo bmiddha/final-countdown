@@ -5,8 +5,7 @@ const Config = {
     finalWarningBorderTime: 3600000, // 1 hour
     defaultFilterString: '.*',
     defaultViewCount: 30,
-    cacheStaleThreshold: 1,
-    // cacheStaleThreshold: 36000000, // 10 hours
+    cacheStaleThreshold: 36000000, // 10 hours
 };
 
 export default Config;
