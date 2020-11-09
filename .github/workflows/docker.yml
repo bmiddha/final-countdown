@@ -5,12 +5,12 @@ on:
     branches:
       - '*'
       - '!next'
-      - '!master'
+      - '!main'
 
 jobs:
   build-image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: build-image
       run: docker build .

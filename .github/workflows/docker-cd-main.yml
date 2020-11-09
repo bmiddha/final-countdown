@@ -1,15 +1,15 @@
-name: Docker CD - master
+name: Docker CD - main
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  build-deploy-master:
+  build-deploy-main:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: build-image
       run: |
         docker build -t ${{ secrets.REGISTRY_HOST }}/${{ github.repository }} .
