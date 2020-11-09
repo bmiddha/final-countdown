@@ -1,8 +1,9 @@
-import { Response, FinalResponse } from "../models/FinalsApi";
+import { FinalsResponse, FinalResponse } from "../models/FinalsApi";
 import { FinalModel } from "../models/Final";
 import Config from "../Config";
+import { DateTime } from "luxon";
 
-let cache: { timestamp: Date; data: Response };
+let cache: { timestamp: Date; data: FinalsResponse };
 
 const GetFinals = async (term: string): Promise<FinalModel[]> => {
   const localCache = window.localStorage.getItem("finalsResponseCache");
@@ -23,7 +24,7 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
   return cache.data.output
     .map(
       (e: FinalResponse): FinalModel => {
-        const date = `${e.day} ${new Date().getFullYear()}`;
+        const date = `${e.day} ${DateTime.local().year}`;
         let startTimeHour = e.time.split(" ")[0].split(":")[0];
         const startTimeMinute = e.time.split(" ")[0].split(":")[1];
         let endTimeHour = e.time.split(" ")[2].split(":")[0];
@@ -36,8 +37,8 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
             startTimeHour = `${parseInt(startTimeHour) + 12}`;
           }
         }
-        const finalStart = new Date(`${date} ${startTimeHour}:${startTimeMinute}`);
-        const finalEnd = new Date(`${date} ${endTimeHour}:${endTimeMinute}`);
+        const finalStart = DateTime.fromFormat(`${date} ${startTimeHour}:${startTimeMinute} America/Chicago`, "ccc LLL d yyyy T z");
+        const finalEnd = DateTime.fromFormat(`${date} ${endTimeHour}:${endTimeMinute} America/Chicago`, "ccc LLL d yyyy T z");
         const courseCRNMeetingTimeSplit = e.course.split("<br/>");
         const sectionInfo = courseCRNMeetingTimeSplit[1];
         const courseSplit = courseCRNMeetingTimeSplit[0].split(/[ ]+/);

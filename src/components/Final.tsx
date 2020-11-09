@@ -1,6 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
 import Countdown from "./Countdown";
-import { DaysShortNames, MonthShortNames } from "../models/Date";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHourglassHalf,
@@ -27,11 +26,6 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
     };
   });
 
-  const humanizeDate = (d: Date) => `${DaysShortNames[d.getDay()]}, ${MonthShortNames[d.getMonth()]} ${d.getDate()}`;
-  const humanizeTime = (d: Date) =>
-    `${(d.getHours() > 12 ? d.getHours() - 12 : d.getHours())
-      .toString()
-      .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")} ${d.getHours() > 11 ? "PM" : "AM"}`;
   const statusClass = isEnded
     ? "success"
     : isOngoing
@@ -68,8 +62,8 @@ const Final: FC<FinalModel> = (props: FinalModel) => {
           </p>
         </div>
         <div className={`card-footer border-${statusClass}`}>
-          <FontAwesomeIcon icon={faClock} /> {humanizeDate(props.finalStart)} {humanizeTime(props.finalStart)} -{" "}
-          {humanizeTime(props.finalEnd)}
+          <FontAwesomeIcon icon={faClock} /> {props.finalStart.toFormat("ccc, LLL d t")} -{" "}
+          {props.finalEnd.toFormat("t")}
         </div>
       </div>
     </div>

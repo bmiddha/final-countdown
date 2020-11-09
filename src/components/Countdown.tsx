@@ -1,9 +1,10 @@
+import { DateTime } from "luxon";
 import React, { FC, useEffect, useState } from "react";
 import Config from "../Config";
 
 interface CountdownProps {
   endMessage?: string;
-  timer: Date;
+  timer: DateTime;
 }
 
 const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {

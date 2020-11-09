@@ -98,7 +98,7 @@ export interface Terms {
   summer: SummerTerm;
 }
 
-export interface Response {
+export interface AcademicYearResponse {
   terms: Terms;
   revised: TermsTimestamp;
 }

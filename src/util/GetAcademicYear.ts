@@ -1,9 +1,9 @@
-import { Response } from "../models/AcademicYearApi";
+import { AcademicYearResponse } from "../models/AcademicYearApi";
 import Config from "../Config";
 
-let cache: { timestamp: Date; data: Response };
+let cache: { timestamp: Date; data: AcademicYearResponse };
 
-const GetAcademicYear = async (): Promise<Response> => {
+const GetAcademicYear = async (): Promise<AcademicYearResponse> => {
   const localCache = window.localStorage.getItem("academicYearCache");
   if (localCache) {
     cache = JSON.parse(localCache);

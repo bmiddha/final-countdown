@@ -1,9 +1,10 @@
+import { DateTime } from "luxon";
 import React, { FC } from "react";
 import Countdown from "./Countdown";
 
 interface GraduationCountdownProps {
   term: string;
-  timer: Date;
+  timer: DateTime;
 }
 
 const GraduationCountdown: FC<GraduationCountdownProps> = ({ term, timer }: GraduationCountdownProps) => (

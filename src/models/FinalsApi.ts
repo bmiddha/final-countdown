@@ -8,7 +8,7 @@ export interface FinalResponse {
   comments: string;
 }
 
-export interface Response {
+export interface FinalsResponse {
   rows: number;
   output: FinalResponse[];
 }

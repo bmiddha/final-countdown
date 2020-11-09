@@ -6,6 +6,7 @@ import GetFinals from "../util/GetFinals";
 import GetAcademicYear from "../util/GetAcademicYear";
 import { Term } from "../models/AcademicYearApi";
 import Config from "../Config";
+import { DateTime } from "luxon";
 
 interface HomeProps {
   filter: string;
@@ -15,7 +16,7 @@ interface HomeProps {
 const Home: FC<HomeProps> = ({ filter, viewCount }) => {
   const [allFinals, setAllFinals] = useState<FinalModel[]>([]);
   const [finals, setFinals] = useState<FinalModel[]>([]);
-  const [endOfFinals, setEndOfFinals] = useState<Date>();
+  const [endOfFinals, setEndOfFinals] = useState<DateTime>();
   const [term, setTerm] = useState<string>("");
   const [filterError, setFilterError] = useState<string>();
 
@@ -32,7 +33,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
         nearestTerm = academicYear.terms.spring;
       }
       setTerm(nearestTerm.term_data.name);
-      setEndOfFinals(new Date(nearestTerm.finals.stop.timestamp_eod * 1000));
+      setEndOfFinals(DateTime.fromMillis(nearestTerm.finals.stop.timestamp_eod * 1000));
       const finals = await GetFinals(nearestTerm.term_data.term_code);
       setAllFinals(finals);
     };
@@ -79,6 +80,8 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
     };
   }, [finals, filterFinals, filter, viewCount]);
 
+  const clientTZ = DateTime.local().zoneName;
+
   return (
     <>
       {filterError ? (
@@ -87,6 +90,11 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
         </div>
       ) : (
         <></>
+      )}
+      {clientTZ !== "America/Chicago" && (
+        <div className="alert alert-info" role="alert">
+          Your timezone is {clientTZ}. The schedule has been adjusted for your timezone.
+        </div>
       )}
       {endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <></>}
       <FinalsList finals={finals} />
