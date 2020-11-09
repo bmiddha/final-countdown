@@ -3,14 +3,14 @@ name: Docker CI
 on:
   push:
     branches:
-      - '*'
-      - '!next'
-      - '!main'
+      - "*"
+      - "!next"
+      - "!main"
 
 jobs:
   build-image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: build-image
-      run: docker build .
+      - uses: actions/checkout@v2
+      - name: build-image
+        run: docker build .

@@ -9,9 +9,9 @@ jobs:
   build-deploy-main:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: build-image
-      run: |
-        docker build -t ${{ secrets.REGISTRY_HOST }}/${{ github.repository }} .
-        docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_HOST }}
-        docker push ${{ secrets.REGISTRY_HOST }}/${{ github.repository }}
+      - uses: actions/checkout@v2
+      - name: build-image
+        run: |
+          docker build -t ${{ secrets.REGISTRY_HOST }}/${{ github.repository }} .
+          docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_HOST }}
+          docker push ${{ secrets.REGISTRY_HOST }}/${{ github.repository }}
