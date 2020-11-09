@@ -46,12 +46,6 @@ const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
           <NavLink to="/" className="nav-item" activeClassName="active" exact>
             <span className="nav-link">Home</span>
           </NavLink>
-          <NavLink to="/myfinals" className="nav-item" activeClassName="active">
-            <span className="nav-link">My Finals</span>
-          </NavLink>
-          <NavLink to="/config" className="nav-item" activeClassName="active">
-            <span className="nav-link">Config</span>
-          </NavLink>
         </ul>
         <form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
           <input
