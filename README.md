@@ -15,13 +15,13 @@
     <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CI%22'>
         <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CI?label=build:%20Docker%20CI' alt='build status' />
     </a>
-    <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+master%22'>
-        <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD?label=build:%20Docker%20CD%20-%20master' alt='build status' />
+    <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+main%22'>
+        <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD?label=build:%20Docker%20CD%20-%20main' alt='build status' />
     </a>
     <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+next%22'>
         <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD/next?label=build:%20Docker%20CD%20-%20next' alt='build status' />
     </a>
-    <a href='https://github.com/bmiddha/final-countdown/blob/master/LICENSE'>
+    <a href='https://github.com/bmiddha/final-countdown/blob/main/LICENSE'>
         <img src='https://img.shields.io/github/license/bmiddha/final-countdown' alt='license' />
     </a>
 </p>
@@ -38,12 +38,12 @@ Public Docker Images: [hub.docker.com/r/bmiddha/final-countdown](https://hub.doc
 
 | Branch                                                       | Docker Image Tag | Azure App Service Deployment URL                                                         | Build Status                                                                                                                                                                                          | App Status                                                                                                                                                               |
 | ------------------------------------------------------------ | ---------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [master](https://github.com/bmiddha/final-countdown)         | latest           | [final-countdown.azurewebsites.net](https://final-countdown.azurewebsites.net)           | [![build status](https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD)](https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+master%22)    | [![app status](https://img.shields.io/website?label=webapp&url=https%3A%2F%2Ffinal-countdown.azurewebsites.net%2F)](https://final-countdown.azurewebsites.net)           |
+| [main](https://github.com/bmiddha/final-countdown)         | latest           | [final-countdown.azurewebsites.net](https://final-countdown.azurewebsites.net)           | [![build status](https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD)](https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+main%22)    | [![app status](https://img.shields.io/website?label=webapp&url=https%3A%2F%2Ffinal-countdown.azurewebsites.net%2F)](https://final-countdown.azurewebsites.net)           |
 | [next](https://github.com/bmiddha/final-countdown/tree/next) | next             | [final-countdown-next.azurewebsites.net](https://final-countdown-next.azurewebsites.net) | [![build status](https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD/next)](https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+next%22) | [![app status](https://img.shields.io/website?label=webapp&url=https%3A%2F%2Ffinal-countdown-next.azurewebsites.net%2F)](https://final-countdown-next.azurewebsites.net) |
 
 ## Screenshots
 
-![Screenshot](https://github.com/bmiddha/final-countdown/raw/master/screenshots/ss-1.png)
+![Screenshot](https://github.com/bmiddha/final-countdown/raw/main/screenshots/ss-1.png)
 
 ## Getting Started
 
