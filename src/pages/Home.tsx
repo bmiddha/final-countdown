@@ -45,7 +45,7 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
       setFinals(
         list
           .filter((f) => `${f.department} ${f.course} ${f.crn}`.match(regex))
-          .filter((e) => +e.finalEnd > +new Date())
+          .filter((e) => +e.finalEnd > +DateTime.local())
           .sort((e1, e2) => +e1.finalStart - +e2.finalStart)
           .splice(0, viewCount)
       );
@@ -54,31 +54,24 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
   );
 
   useEffect(() => {
-    const isFilterEmpty = filter.length === 0;
-    if (isFilterEmpty) setFilterError("No filter specified. Please specify a filter.");
-    else {
-      try {
-        filterFinals(allFinals, new RegExp(isFilterEmpty ? "^$" : filter, "i"));
-        setFilterError(undefined);
-      } catch (_) {
-        setFilterError("Invalid filter expression.");
+    const applyFilter = () => {
+      const isFilterEmpty = filter.length === 0;
+      if (isFilterEmpty) setFilterError("No filter specified. Please specify a filter.");
+      else {
+        try {
+          filterFinals(allFinals, new RegExp(isFilterEmpty ? "^$" : filter, "i"));
+          setFilterError(undefined);
+        } catch (_) {
+          setFilterError("Invalid filter expression.");
+        }
       }
-    }
-  }, [allFinals, filterFinals, filter, viewCount]);
-
-  useEffect(() => {
-    const updateInterval = setInterval(() => {
-      try {
-        filterFinals(finals, /filter/i);
-        setFilterError(undefined);
-      } catch (_) {
-        setFilterError("Invalid filter expression.");
-      }
-    }, Config.homeFinalsListUpdateInterval);
+    };
+    applyFilter();
+    const updateInterval = setInterval(applyFilter, Config.homeFinalsListUpdateInterval);
     return () => {
       clearInterval(updateInterval);
     };
-  }, [finals, filterFinals, filter, viewCount]);
+  }, [allFinals, filterFinals, filter, viewCount]);
 
   const clientTZ = DateTime.local().zoneName;
 
