@@ -1,35 +1,39 @@
 import { AcademicYearResponse } from "../models/AcademicYearApi";
 import Config from "../Config";
 
-let cache: { expiry: Date; data: AcademicYearResponse };
+type LocalCache = { expiry: Date; data: AcademicYearResponse };
+
+const getAndRepopulateCache = async () => {
+  const now = new Date();
+  window.localStorage.removeItem("academicYearCache");
+  const newCache = {
+    data: await (
+      await fetch("https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json")
+    ).json(),
+    expiry: new Date(+now + Config.cacheStaleThreshold),
+  };
+  window.localStorage.setItem("academicYearCache", JSON.stringify(newCache));
+  return newCache.data;
+};
 
 const GetAcademicYear = async (): Promise<AcademicYearResponse> => {
   const now = new Date();
-  try {
-    const localCache = window.localStorage.getItem("academicYearCache");
-    if (localCache) {
-      cache = JSON.parse(localCache);
+  const localCache = window.localStorage.getItem("academicYearCache");
+  if (localCache) {
+    let parsed: LocalCache | undefined;
+    try {
+      parsed = JSON.parse(localCache);
+    } catch (e) {
+      window.localStorage.removeItem("academicYearCache");
     }
-    if (+now > +cache.expiry) {
-      cache = {
-        data: await (
-          await fetch("https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json")
-        ).json(),
-        expiry: new Date(+now + Config.cacheStaleThreshold),
-      };
-      window.localStorage.setItem("academicYearCache", JSON.stringify(cache));
+    if (parsed && parsed.data && parsed.expiry && +now < +parsed.expiry) {
+      return parsed.data;
+    } else {
+      return await getAndRepopulateCache();
     }
-  } catch (e) {
-    window.localStorage.removeItem("academicYearCache");
-    cache = {
-      data: await (
-        await fetch("https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json")
-      ).json(),
-      expiry: new Date(+now + Config.cacheStaleThreshold),
-    };
-    window.localStorage.setItem("academicYearCache", JSON.stringify(cache));
+  } else {
+    return await getAndRepopulateCache();
   }
-  return cache.data;
 };
 
 export default GetAcademicYear;
