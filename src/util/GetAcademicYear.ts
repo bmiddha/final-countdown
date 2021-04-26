@@ -1,19 +1,31 @@
 import { AcademicYearResponse } from "../models/AcademicYearApi";
 import Config from "../Config";
 
-let cache: { timestamp: Date; data: AcademicYearResponse };
+let cache: { expiry: Date; data: AcademicYearResponse };
 
 const GetAcademicYear = async (): Promise<AcademicYearResponse> => {
-  const localCache = window.localStorage.getItem("academicYearCache");
-  if (localCache) {
-    cache = JSON.parse(localCache);
-  }
-  if (!cache || !cache.timestamp || +new Date() - +new Date(cache.timestamp) > Config.cacheStaleThreshold) {
+  const now = new Date();
+  try {
+    const localCache = window.localStorage.getItem("academicYearCache");
+    if (localCache) {
+      cache = JSON.parse(localCache);
+    }
+    if (+now > +cache.expiry) {
+      cache = {
+        data: await (
+          await fetch("https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json")
+        ).json(),
+        expiry: new Date(+now + Config.cacheStaleThreshold),
+      };
+      window.localStorage.setItem("academicYearCache", JSON.stringify(cache));
+    }
+  } catch (e) {
+    window.localStorage.removeItem("academicYearCache");
     cache = {
       data: await (
         await fetch("https://xorigin.azurewebsites.net/uicregistrar/assets/api/current-academic-year.json")
       ).json(),
-      timestamp: new Date(),
+      expiry: new Date(+now + Config.cacheStaleThreshold),
     };
     window.localStorage.setItem("academicYearCache", JSON.stringify(cache));
   }
