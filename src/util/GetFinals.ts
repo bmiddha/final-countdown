@@ -3,39 +3,42 @@ import { FinalModel } from "../models/Final";
 import Config from "../Config";
 import { DateTime } from "luxon";
 
-let cache: { expiry: Date; data: FinalsResponse };
+type LocalCache = { expiry: Date; data: FinalsResponse };
+
+const getAndRepopulateCache = async (term: string) => {
+  const now = new Date();
+  window.localStorage.removeItem("finalsResponseCache");
+  const newCache = {
+    data: await (
+      await fetch(`https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`)
+    ).json(),
+    expiry: new Date(+now + Config.cacheStaleThreshold),
+  };
+  window.localStorage.setItem("finalsResponseCache", JSON.stringify(newCache));
+  return newCache.data;
+};
 
 const GetFinals = async (term: string): Promise<FinalModel[]> => {
   const now = new Date();
-  try {
-    const localCache = window.localStorage.getItem("finalsResponseCache");
-    if (localCache) {
-      cache = JSON.parse(localCache);
+  const localCache = window.localStorage.getItem("academicYearCache");
+  let res: FinalsResponse;
+  if (localCache) {
+    let parsed: LocalCache | undefined;
+    try {
+      parsed = JSON.parse(localCache);
+    } catch (e) {
+      window.localStorage.removeItem("academicYearCache");
     }
-    if (+now > +cache.expiry) {
-      cache = {
-        data: await (
-          await fetch(
-            `https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`
-          )
-        ).json(),
-        expiry: new Date(+now + Config.cacheStaleThreshold),
-      };
-      window.localStorage.setItem("finalsResponseCache", JSON.stringify(cache));
+    if (parsed && parsed.data && parsed.expiry && +now < +parsed.expiry) {
+      res = parsed.data;
+    } else {
+      res = await getAndRepopulateCache(term);
     }
-  } catch (e) {
-    window.localStorage.removeItem("finalsResponseCache");
-    cache = {
-      data: await (
-        await fetch(
-          `https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`
-        )
-      ).json(),
-      expiry: new Date(+now + Config.cacheStaleThreshold),
-    };
-    window.localStorage.setItem("finalsResponseCache", JSON.stringify(cache));
+  } else {
+    res = await getAndRepopulateCache(term);
   }
-  return cache.data.output
+
+  return res.output
     .map(
       (e: FinalResponse): FinalModel => {
         const date = `${e.day} ${DateTime.local().year}`;
