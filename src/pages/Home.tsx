@@ -4,7 +4,7 @@ import GraduationCountdown from "../components/GraduationCountdown";
 import { FinalModel } from "../models/Final";
 import GetFinals from "../util/GetFinals";
 import GetAcademicYear from "../util/GetAcademicYear";
-import { Term } from "../models/AcademicYearApi";
+import { SummerTerm, Term } from "../models/AcademicYearApi";
 import Config from "../Config";
 import { DateTime } from "luxon";
 
@@ -23,19 +23,40 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
   useEffect(() => {
     const fetchData = async () => {
       const academicYear = await GetAcademicYear();
-      let nearestTerm: Term = academicYear.terms.fall;
-      // TODO: Add support for summer semester
+      
+      let nearestTerm: Term | SummerTerm | undefined;
+
       if (
-        +new Date() - academicYear.terms.spring.finals.start.timestamp * 1000 > 0 &&
-        +new Date() - academicYear.terms.spring.finals.start.timestamp * 1000 <
-          +new Date() - nearestTerm.finals.start.timestamp
+        +new Date() > academicYear.terms.spring.instruction.start.timestamp * 1000 &&
+        +new Date() < academicYear.terms.spring.finals.stop.timestamp * 1000
       ) {
         nearestTerm = academicYear.terms.spring;
+      } else if (
+        +new Date() > academicYear.terms.fall.instruction.start.timestamp * 1000 &&
+        +new Date() < academicYear.terms.fall.finals.stop.timestamp * 1000
+      ) {
+        nearestTerm = academicYear.terms.fall;
+      } else if (
+        (+new Date() > academicYear.terms.summer.instruction.session_1.start.timestamp * 1000 &&
+        +new Date() < academicYear.terms.summer.finals.session_1.stop.timestamp * 1000) || 
+        (+new Date() > academicYear.terms.summer.instruction.session_2.start.timestamp * 1000 &&
+        +new Date() < academicYear.terms.summer.finals.session_2.stop.timestamp * 1000)
+      ) {
+        nearestTerm = academicYear.terms.summer;
       }
-      setTerm(nearestTerm.term_data.name);
-      setEndOfFinals(DateTime.fromMillis(nearestTerm.finals.stop.timestamp_eod * 1000));
-      const finals = await GetFinals(nearestTerm.term_data.term_code);
-      setAllFinals(finals);
+
+      if (nearestTerm) {
+        setTerm(nearestTerm.term_data.name);
+        if ('session_1' in (nearestTerm as SummerTerm).finals) {
+          setEndOfFinals(DateTime.fromMillis((nearestTerm as SummerTerm).finals.session_1.stop.timestamp_eod * 1000));
+        } else if ('session_2' in (nearestTerm as SummerTerm).finals) {
+          setEndOfFinals(DateTime.fromMillis((nearestTerm as SummerTerm).finals.session_2.stop.timestamp_eod * 1000));
+        } else {
+          setEndOfFinals(DateTime.fromMillis((nearestTerm as Term).finals.stop.timestamp_eod * 1000));
+        }
+        const finals = await GetFinals(nearestTerm.term_data.term_code);
+        setAllFinals(finals);
+      }
     };
     fetchData();
   }, []);
@@ -77,12 +98,10 @@ const Home: FC<HomeProps> = ({ filter, viewCount }) => {
 
   return (
     <>
-      {filterError ? (
+      {filterError && (
         <div className="alert alert-info" role="alert">
           {filterError}
         </div>
-      ) : (
-        <></>
       )}
       {clientTZ !== "America/Chicago" && (
         <div className="alert alert-info" role="alert">

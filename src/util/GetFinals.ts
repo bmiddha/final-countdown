@@ -3,21 +3,35 @@ import { FinalModel } from "../models/Final";
 import Config from "../Config";
 import { DateTime } from "luxon";
 
-let cache: { timestamp: Date; data: FinalsResponse };
+let cache: { expiry: Date; data: FinalsResponse };
 
 const GetFinals = async (term: string): Promise<FinalModel[]> => {
-  const localCache = window.localStorage.getItem("finalsResponseCache");
-  if (localCache) {
-    cache = JSON.parse(localCache);
-  }
-  if (!cache || !cache.timestamp || +new Date() - +new Date(cache.timestamp) > Config.cacheStaleThreshold) {
+  const now = new Date();
+  try {
+    const localCache = window.localStorage.getItem("finalsResponseCache");
+    if (localCache) {
+      cache = JSON.parse(localCache);
+    }
+    if (+now > +cache.expiry) {
+      cache = {
+        data: await (
+          await fetch(
+            `https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`
+          )
+        ).json(),
+        expiry: new Date(+now + Config.cacheStaleThreshold),
+      };
+      window.localStorage.setItem("finalsResponseCache", JSON.stringify(cache));
+    }
+  } catch (e) {
+    window.localStorage.removeItem("finalsResponseCache");
     cache = {
       data: await (
         await fetch(
           `https://xorigin.azurewebsites.net/uicregistrar/assets/scripts/finals-initial-query.php?term=${term}`
         )
       ).json(),
-      timestamp: new Date(),
+      expiry: new Date(+now + Config.cacheStaleThreshold),
     };
     window.localStorage.setItem("finalsResponseCache", JSON.stringify(cache));
   }
@@ -37,8 +51,14 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
             startTimeHour = `${parseInt(startTimeHour) + 12}`;
           }
         }
-        const finalStart = DateTime.fromFormat(`${date} ${startTimeHour}:${startTimeMinute} America/Chicago`, "ccc LLL d yyyy T z");
-        const finalEnd = DateTime.fromFormat(`${date} ${endTimeHour}:${endTimeMinute} America/Chicago`, "ccc LLL d yyyy T z");
+        const finalStart = DateTime.fromFormat(
+          `${date} ${startTimeHour}:${startTimeMinute} America/Chicago`,
+          "ccc LLL d yyyy T z"
+        );
+        const finalEnd = DateTime.fromFormat(
+          `${date} ${endTimeHour}:${endTimeMinute} America/Chicago`,
+          "ccc LLL d yyyy T z"
+        );
         const courseCRNMeetingTimeSplit = e.course.split("<br/>");
         const sectionInfo = courseCRNMeetingTimeSplit[1];
         const courseSplit = courseCRNMeetingTimeSplit[0].split(/[ ]+/);
@@ -56,7 +76,7 @@ const GetFinals = async (term: string): Promise<FinalModel[]> => {
         };
       }
     )
-    .filter((e: FinalModel) => +e.finalEnd > +new Date())
+    .filter((e: FinalModel) => +e.finalEnd > +now)
     .sort((e1: FinalModel, e2: FinalModel) => +e1.finalStart - +e2.finalStart);
 };
 
