@@ -3,7 +3,7 @@ import React, { FC, useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Config from "./Config";
+import Config from "./util/Config";
 
 const App: FC = () => {
   const UserConfigOptions = ["filterString", "viewCount"];

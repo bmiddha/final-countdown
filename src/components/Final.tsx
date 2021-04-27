@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FinalModel } from "../models/Final";
 import "./Final.css";
-import Config from "../Config";
+import Config from "../util/Config";
 
 const Final: FC<FinalModel> = (props: FinalModel) => {
   const [isOngoing, setIsOngoing] = useState(false);

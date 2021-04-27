@@ -1,5 +1,5 @@
 import { AcademicYearResponse } from "../models/AcademicYearApi";
-import Config from "../Config";
+import Config from "./Config";
 
 type LocalCache = { expiry: Date; data: AcademicYearResponse };
 

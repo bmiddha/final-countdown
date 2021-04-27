@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import React, { FC, useEffect, useState } from "react";
-import Config from "../Config";
+import Config from "../util/Config";
 
 interface CountdownProps {
   endMessage?: string;
