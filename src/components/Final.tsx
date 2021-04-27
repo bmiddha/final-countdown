@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClock,
   faHourglassEnd,
@@ -11,10 +10,12 @@ import {
   faHourglassStart,
   faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Config } from '../util';
 import { Countdown } from '.';
 import { FinalModel } from '../models';
-import { Config } from '../util';
+
 import styles from './Final.module.css';
 
 export type FinalProps = FinalModel;

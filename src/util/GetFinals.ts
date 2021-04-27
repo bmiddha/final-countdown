@@ -1,6 +1,7 @@
-import { FinalModel, FinalsResponse, FinalResponse } from '../models';
-import Config from './Config';
 import { DateTime } from 'luxon';
+
+import { FinalModel, FinalResponse, FinalsResponse } from '../models';
+import Config from './Config';
 
 type LocalCache = { expiry: Date; data: FinalsResponse };
 

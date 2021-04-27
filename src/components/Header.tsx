@@ -1,10 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
-import Link from 'next/link';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import React, { FC, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
 export type HeaderProps = {
   applyFilter: (filterString: string) => void;
@@ -13,7 +12,6 @@ export type HeaderProps = {
 
 export const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
   const [filterString, setFilterString] = useState<string>('');
-  const [collapseNav, setCollapseNav] = useState<boolean>(true);
 
   useEffect(() => {
     setFilterString(filter);

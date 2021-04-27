@@ -1,5 +1,6 @@
-import { DateTime } from 'luxon';
 import React, { FC, useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
+
 import { Config } from '../util';
 
 export type CountdownProps = {

@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
+
+import { faCode, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faCode, faHeart } from '@fortawesome/free-solid-svg-icons';
-import Container from 'react-bootstrap/Container';
+
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
 export type FooterProps = Record<string, never>;
 

@@ -1,8 +1,10 @@
+import React, { FC } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+
 import 'bootswatch/dist/simplex/bootstrap.min.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
@@ -18,6 +20,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </>
   );
-}
+};
 
-export default MyApp;
+export default App;

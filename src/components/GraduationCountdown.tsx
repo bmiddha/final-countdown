@@ -1,8 +1,10 @@
-import { DateTime } from 'luxon';
 import React, { FC } from 'react';
-import Countdown from './Countdown';
-import Container from 'react-bootstrap/Container';
+import { DateTime } from 'luxon';
+
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+
+import Countdown from './Countdown';
 
 export type GraduationCountdownProps = {
   term: string;

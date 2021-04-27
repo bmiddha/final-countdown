@@ -8,7 +8,7 @@
     "start": "next start",
     "export": "next build && next export -o build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,sass,html,yaml}\"",
-    "lint": "eslint **/*.{js,jsx,ts,tsx,json,css,scss,sass,html,yaml}",
+    "lint": "eslint **/*.{js,jsx,ts,tsx}",
     "prepare": "husky install"
   },
   "lint-staged": {
