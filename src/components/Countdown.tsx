@@ -1,13 +1,13 @@
-import { DateTime } from "luxon";
-import React, { FC, useEffect, useState } from "react";
-import Config from "../util/Config";
+import { DateTime } from 'luxon';
+import React, { FC, useEffect, useState } from 'react';
+import { Config } from '../util';
 
-interface CountdownProps {
+export type CountdownProps = {
   endMessage?: string;
   timer: DateTime;
-}
+};
 
-const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
+export const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
   const [timeLeft, setTimeLeft] = useState(+timer - +new Date());
 
   useEffect(() => {
@@ -26,15 +26,15 @@ const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) =>
         <>
           {Math.floor(timeLeft / (1000 * 60 * 60))
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
           :
           {Math.floor((timeLeft / (1000 * 60)) % 60)
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
           :
           {Math.floor((timeLeft / 1000) % 60)
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
         </>
       ) : (
         <span>{endMessage}</span>

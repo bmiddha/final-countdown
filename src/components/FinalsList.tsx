@@ -1,20 +1,24 @@
-import React, { FC } from "react";
-import Final from "../components/Final";
-import { FinalModel } from "../models/Final";
+import React, { FC } from 'react';
 
-interface FinalsListProps {
+import Container from 'react-bootstrap/Container';
+import CardDeck from 'react-bootstrap/CardDeck';
+
+import { Final } from '../components';
+import { FinalModel } from '../models';
+
+export type FinalsListProps = {
   finals: FinalModel[];
-}
+};
 
-const FinalsList: FC<FinalsListProps> = ({ finals }) => (
+export const FinalsList: FC<FinalsListProps> = ({ finals }) => (
   <>
-    <div className="container-fluid">
-      <div className="card-deck">
+    <Container fluid>
+      <CardDeck>
         {finals.map((f: FinalModel, key: number) => (
           <Final key={key} {...f} />
         ))}
-      </div>
-    </div>
+      </CardDeck>
+    </Container>
   </>
 );
 

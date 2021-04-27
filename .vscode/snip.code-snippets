@@ -1,0 +1,19 @@
+{
+  "ReactFunctionComponent": {
+    "scope": "typescriptreact",
+    "prefix": "rfc",
+    "body": [
+      "import React from 'react';",
+      "",
+      "export type ${1:ComponentName}Props = Record<string, never>;",
+      "",
+      "export const ${1:ComponentName}: React.FC<${1:ComponentName}Props> = ({}) => {",
+      "  return <>${1:ComponentName}</>;",
+      "}",
+      "",
+      "export default ${1:ComponentName};",
+      ""
+    ],
+    "description": "Create React Function Component"
+  },
+}

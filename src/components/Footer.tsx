@@ -1,22 +1,27 @@
-import React, { FC } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faCode, faHeart } from "@fortawesome/free-solid-svg-icons";
+import React, { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faCode, faHeart } from '@fortawesome/free-solid-svg-icons';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
 
-const Header: FC = () => {
+export type FooterProps = Record<string, never>;
+
+export const Footer: FC<FooterProps> = ({}) => {
   return (
-    <footer className="container py-4">
-      <div className="col">
+    <Container className="py-4">
+      <Col>
         <p className="lead text-center">
           <a href="https://github.com/bmiddha/final-countdown">
-            <FontAwesomeIcon icon={faCode} /> with <FontAwesomeIcon icon={faHeart} /> by Bharat Middha.
+            <FontAwesomeIcon width="16" icon={faCode} /> with <FontAwesomeIcon width="16" icon={faHeart} /> by Bharat
+            Middha.
             <br />
-            <FontAwesomeIcon icon={faGithub} /> github.com/bmiddha/final-countdown
+            <FontAwesomeIcon width="16" icon={faGithub} /> github.com/bmiddha/final-countdown
           </a>
         </p>
-      </div>
-    </footer>
+      </Col>
+    </Container>
   );
 };
 
-export default Header;
+export default Footer;
