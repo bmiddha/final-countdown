@@ -5,7 +5,7 @@ import { FinalModel } from "../models/Final";
 import GetFinals from "../util/GetFinals";
 import GetAcademicYear from "../util/GetAcademicYear";
 import { SummerTerm, Term } from "../models/AcademicYearApi";
-import Config from "../Config";
+import Config from "../util/Config";
 import { DateTime } from "luxon";
 
 interface HomeProps {

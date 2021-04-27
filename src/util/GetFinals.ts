@@ -1,6 +1,6 @@
 import { FinalsResponse, FinalResponse } from "../models/FinalsApi";
 import { FinalModel } from "../models/Final";
-import Config from "../Config";
+import Config from "./Config";
 import { DateTime } from "luxon";
 
 let cache: { expiry: Date; data: FinalsResponse };

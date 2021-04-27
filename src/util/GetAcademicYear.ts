@@ -1,5 +1,5 @@
 import { AcademicYearResponse } from "../models/AcademicYearApi";
-import Config from "../Config";
+import Config from "./Config";
 
 let cache: { expiry: Date; data: AcademicYearResponse };
 
