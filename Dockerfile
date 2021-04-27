@@ -1,12 +1,12 @@
-FROM node:12-alpine as build
+FROM node:14-alpine as build
 
 LABEL maintainer="5100938+bmiddha@users.noreply.github.com"
 
 WORKDIR /app
-COPY package.json /app/package.json
-RUN npm install --silent
+COPY package.json yarn.lock ./
+RUN yarn install
 COPY . .
-RUN npm run build
+RUN yarn build
 
 FROM nginx:alpine as publish
 
