@@ -25,7 +25,7 @@ jobs:
       - name: Install packages 🏗
         run: yarn install
 
-      - name: Check prettier ✅
+      - name: Check linter ✅
         run: yarn lint
 
       - name: Build Project 🔧

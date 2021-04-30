@@ -1,3 +1,5 @@
 build
 node_modules
 .next
+public/workbox*
+public/sw*
