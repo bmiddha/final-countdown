@@ -14,7 +14,7 @@ const Home: FC<HomeProps> = ({}) => {
   const [endOfFinals, setEndOfFinals] = useState<number>();
   const [term, setTerm] = useState<string>('');
   const [filterError, setFilterError] = useState<string>();
-  const [filterString, setFilterString] = useState<string>(Config.defaultFilterString);
+  const [filterString, setFilterString] = useState<string>();
 
   const { data, isValidating } = useSWR<DataApiResponse>('/api/data');
 
