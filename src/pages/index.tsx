@@ -100,9 +100,11 @@ const Home: FC<HomeProps> = ({}) => {
       <div>{endOfFinals ? <GraduationCountdown term={term} timer={endOfFinals} /> : <></>}</div>
       <div>
         {isValidating && (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
+          <p className="text-center">
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          </p>
         )}
         {finals && <FinalsList finals={finals} />}
       </div>
