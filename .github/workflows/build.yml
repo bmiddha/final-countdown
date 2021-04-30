@@ -1,0 +1,32 @@
+name: CI Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 14 🐢
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Package cache 💾
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages 🏗
+        run: yarn install
+
+      - name: Check prettier ✅
+        run: yarn lint
+
+      - name: Build Project 🔧
+        run: yarn build

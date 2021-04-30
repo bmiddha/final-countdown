@@ -1,24 +1,25 @@
-import { DateTime } from "luxon";
-import React, { FC, useEffect, useState } from "react";
-import Config from "../util/Config";
+import React, { FC, useEffect, useState } from 'react';
 
-interface CountdownProps {
+import { Config } from '../util';
+
+export type CountdownProps = {
   endMessage?: string;
-  timer: DateTime;
-}
+  timer: number;
+};
 
-const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
-  const [timeLeft, setTimeLeft] = useState(+timer - +new Date());
+export const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) => {
+  const [timeLeft, setTimeLeft] = useState(timer - new Date().getTime());
 
   useEffect(() => {
-    const updateInterval = setInterval(() => {
-      setTimeLeft(+timer - +new Date());
-      if (timeLeft < 0) clearInterval(updateInterval);
+    const timerInterval = window.setInterval(() => {
+      const _timeLeft = timer - new Date().getTime();
+      setTimeLeft(_timeLeft);
+      if (_timeLeft < 0) {
+        clearInterval(timerInterval);
+      }
     }, Config.countdownUpdateInterval);
-    return () => {
-      clearInterval(updateInterval);
-    };
-  });
+    return () => clearInterval(timerInterval);
+  }, [timer]);
 
   return (
     <span className="text-monospace">
@@ -26,15 +27,15 @@ const Countdown: FC<CountdownProps> = ({ timer, endMessage }: CountdownProps) =>
         <>
           {Math.floor(timeLeft / (1000 * 60 * 60))
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
           :
           {Math.floor((timeLeft / (1000 * 60)) % 60)
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
           :
           {Math.floor((timeLeft / 1000) % 60)
             .toString()
-            .padStart(2, "0")}
+            .padStart(2, '0')}
         </>
       ) : (
         <span>{endMessage}</span>

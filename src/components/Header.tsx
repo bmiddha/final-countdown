@@ -1,14 +1,17 @@
-import React, { FC, useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { FC, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
-interface HeaderProps {
+export type HeaderProps = {
   applyFilter: (filterString: string) => void;
   filter: string;
-}
+};
 
-const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
-  const [filterString, setFilterString] = useState<string>("");
-  const [collapseNav, setCollapseNav] = useState<boolean>(true);
+export const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
+  const [filterString, setFilterString] = useState<string>('');
 
   useEffect(() => {
     setFilterString(filter);
@@ -19,50 +22,30 @@ const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
     applyFilter(filterString);
   };
 
-  const updateFilterString = (e: React.FormEvent<HTMLInputElement>) => {
-    setFilterString(e.currentTarget.value);
-  };
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand" href="/">
+    <Navbar variant="dark" bg="dark" expand="lg">
+      <Navbar.Brand>
         <img src="/icon-120.png" width="30" height="30" alt="" /> Final Countdown
-      </a>
-
-      <button
-        className="navbar-toggler"
-        onClick={() => setCollapseNav(!collapseNav)}
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className={`${collapseNav ? "collapse" : ""} navbar-collapse`} id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
-          <NavLink to="/" className="nav-item" activeClassName="active" exact>
-            <span className="nav-link">Home</span>
-          </NavLink>
-        </ul>
-        <form className="form-inline my-2 my-lg-0" onSubmit={handleSubmit}>
-          <input
-            className="form-control mr-sm-2"
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto"></Nav>
+        <Form inline onSubmit={handleSubmit}>
+          <FormControl
+            type="text"
             name="filterString"
-            type="search"
             placeholder="Regex Filter"
             aria-label="Regex Filter"
+            className="mr-sm-2"
             value={filterString}
-            onChange={updateFilterString}
+            onChange={(e) => setFilterString(e.currentTarget.value)}
           />
-          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
+          <Button variant="secondary" type="submit">
             Filter
-          </button>
-        </form>
-      </div>
-    </nav>
+          </Button>
+        </Form>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 
