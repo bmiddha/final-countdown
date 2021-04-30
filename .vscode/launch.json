@@ -5,8 +5,10 @@
       "type": "pwa-chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "url": "http://localhost:30000",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "timeout": 15000
     }
   ]
 }

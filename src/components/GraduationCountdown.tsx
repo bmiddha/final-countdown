@@ -1,15 +1,13 @@
 import React, { FC } from 'react';
-import { DateTime } from 'luxon';
 
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
-import Countdown from './Countdown';
+import { Countdown, CountdownProps } from './Countdown';
 
 export type GraduationCountdownProps = {
   term: string;
-  timer: DateTime;
-};
+} & CountdownProps;
 
 export const GraduationCountdown: FC<GraduationCountdownProps> = ({ term, timer }: GraduationCountdownProps) => (
   <Container className="py-4">

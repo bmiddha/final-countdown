@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import 'bootswatch/dist/simplex/bootstrap.min.css';
+import 'bootswatch/dist/darkly/bootstrap.min.css';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (

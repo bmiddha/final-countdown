@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -73,8 +74,9 @@ export const Final: FC<FinalProps> = (props: FinalProps) => {
           </p>
         </Card.Body>
         <Card.Footer className={statusClass ? `border-${statusClass}` : ''}>
-          <FontAwesomeIcon width="16" icon={faClock} /> {props.finalStart.toFormat('ccc, LLL d t')} -{' '}
-          {props.finalEnd.toFormat('t')}
+          <FontAwesomeIcon width="16" icon={faClock} />{' '}
+          {DateTime.fromJSDate(new Date(props.finalStart)).toFormat('ccc, LLL d t')} -{' '}
+          {DateTime.fromJSDate(new Date(props.finalEnd)).toFormat('t')}
         </Card.Footer>
       </Card>
     </Col>

@@ -23,7 +23,7 @@ export const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar variant="dark" bg="dark" expand="lg">
       <Navbar.Brand>
         <img src="/icon-120.png" width="30" height="30" alt="" /> Final Countdown
       </Navbar.Brand>
@@ -40,7 +40,7 @@ export const Header: FC<HeaderProps> = ({ applyFilter, filter }) => {
             value={filterString}
             onChange={(e) => setFilterString(e.currentTarget.value)}
           />
-          <Button variant="outline-success" type="submit">
+          <Button variant="secondary" type="submit">
             Filter
           </Button>
         </Form>

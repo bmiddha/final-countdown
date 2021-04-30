@@ -1,12 +1,10 @@
-import { DateTime } from 'luxon';
-
 export interface FinalModel {
   type: string;
   department: string;
   course: string;
   crn: string;
-  finalStart: DateTime;
-  finalEnd: DateTime;
+  finalStart: number;
+  finalEnd: number;
   location: string;
   comments: string;
   instructor: string;
