@@ -3,17 +3,11 @@
 </p>
 
 <p align='center'>
-    <a href='https://final-countdown.azurewebsites.net'>
-        <img src='https://img.shields.io/website?label=release&url=https%3A%2F%2Ffinal-countdown.azurewebsites.net%2F' alt='Release' />
+    <a href='https://finals.acmuic.app'>
+        <img src='https://img.shields.io/website?label=release&url=https%3A%2F%2Ffinals.acmuic.app%2F' alt='Release' />
     </a>
-    <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Node+CI%22'>
-        <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Node%20CI?label=build:%20Node%20CI' alt='build status' />
-    </a>
-    <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CI%22'>
-        <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CI?label=build:%20Docker%20CI' alt='build status' />
-    </a>
-    <a href='https://github.com/bmiddha/final-countdown/actions?query=workflow%3A%22Docker+CD+-+main%22'>
-        <img src='https://img.shields.io/github/workflow/status/bmiddha/final-countdown/Docker%20CD?label=build:%20Docker%20CD%20-%20main' alt='build status' />
+    <a href='https://github.com/bmiddha/final-countdown/actions/workflows/build.yml'>
+        <img src='https://github.com/bmiddha/final-countdown/actions/workflows/build.yml/badge.svg' alt='CI Build'>
     </a>
     <a href='https://github.com/bmiddha/final-countdown/blob/main/LICENSE'>
         <img src='https://img.shields.io/github/license/bmiddha/final-countdown' alt='license' />
@@ -24,11 +18,7 @@
 
 Final Exam Schedule for UIC with countdowns.
 
-This is a progressive web app (PWA) written in [TypeScript](https://www.typescriptlang.org/) and [React.js](https://reactjs.org/).
-
-## Deployments
-
-Public Docker Images: [hub.docker.com/r/bmiddha/final-countdown](https://hub.docker.com/r/bmiddha/final-countdown).
+This is a progressive web app (PWA) written in [TypeScript](https://www.typescriptlang.org/) and [Next.js](https://nextjs.org/).
 
 ## Screenshots
 
@@ -36,18 +26,8 @@ Public Docker Images: [hub.docker.com/r/bmiddha/final-countdown](https://hub.doc
 
 ## Getting Started
 
-- Dependencies: `npm install`
-- Building: `npm run build`
-- Developing: `npm run start`
-
-## Docker Deployment
-
-The [bmiddha/final-countdown](https://hub.docker.com/r/bmiddha/final-countdown) docker image is _tiny_ and runs a production ready app in NGINX.
-
-```sh
-docker pull bmiddha/final-countdown:latest
-docker run -it --rm -p 8080:80 bmiddha/final-countdown:latest
-```
+- Dependencies: `yarn install`
+- Developing: `yarn dev`
 
 ## Contributing
 
