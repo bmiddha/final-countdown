@@ -20,7 +20,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
-    "axios": "^0.21.2",
+    "axios": "^1.6.0",
     "bootswatch": "^4.6.0",
     "luxon": "^1.28.1",
     "next": "latest",
